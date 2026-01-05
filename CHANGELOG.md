@@ -5,7 +5,17 @@
 - Add USB mappings for macOS 26
 - Adopt Liquid Glass-conformant app icon
 - Increment Binaries:
-  - OpenCorePkg 1.0.5 - rolling (f03819e)
+- PatcherSupportPkg 1.9.7 - release
+  - OpenCorePkg 1.0.6 - release
+
+## 2.5.0
+
+- Disable repatching a dirty root volume
+- Prevents issues if existing patches are partially overwritten
+- Thanks @crystall1nedev!
+- Add slimmed down patchset for Modern Wireless for macOS Sequoia
+- Increment binaries:
+  - PatcherSupportPkg 1.9.6 - release
 
 ## 2.4.1
 - Switch installer source to AppleDB
