@@ -13,18 +13,18 @@ This repository supports:
 
 ### In particular:
 * Previous handling of **HFS-based patch images** is no longer accepted by the OS.
-* Mounting images via `hdiutil` now requires **elevated privileges** and cannot be executed in a normal user context. Because of this, the original OCLP 3.0.0 Nightly workflow cannot complete the root patch installation process on macOS 26.4 without modification.
+* Mounting images via [`hdiutil`](https://github.com/YBronst/tccplus) now requires **elevated privileges** and cannot be executed in a normal user context. Because of this, the original OCLP 3.0.0 Nightly workflow cannot complete the root patch installation process on macOS 26.4 without modification.
 
 ## Key Changes in 3.1.5
 * **Backward compatibility** with macOS Tahoe 26.0 – 26.3 is maintained.
 * **Patch image processing** has been migrated to APFS for compatibility with macOS 26.4.
 * **Privileged mount logic** has been added, which is necessary for accessing internal patch images and system resources.
-* **AMFIPass** cannot be used with OCLP 3.1.5 due to a persistent kernel bug. Instead, use `tccplus`-based permissions handling and require the `amfi=0x80` boot argument.
+* **AMFIPass** cannot be used with OCLP 3.1.5 due to a persistent kernel panic. Instead, use `amfi=0x80` boot argument and handling application permissions based on [`tccplus`](https://github.com/YBronst/tccplus).
 
 ## Modern Audio (AppleHDA)
 On macOS 26.4 beta 1, installing the Modern Audio patch is temporarily **not recommended** until the corresponding kernel debug kit (KDK) becomes available.
 
-For systems requiring a fully functional reference environment (including sound) on macOS 26.3 and earlier, I recommend a saved and working patch snapshot from December 24th, available here: [OCLP-lzhoang2801](https://github.com/kgp-macPro/OCLP-lzhoang2801)
+For systems requiring a fully functional reference environment (including sound) on macOS 26.3 and earlier, I recommend a saved and working patch snapshot from December 24th, available here: [`OCLP-lzhoang2801`](https://github.com/kgp-macPro/OCLP-lzhoang2801)
 
 *Note: This patch set still requires the `amfi=0x80` boot argument.*
 
