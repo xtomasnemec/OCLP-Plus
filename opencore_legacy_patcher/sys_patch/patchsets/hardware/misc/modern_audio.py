@@ -26,8 +26,10 @@ class ModernAudio(BaseHardware):
 
     def present(self) -> bool:
         """
-        AppleHDA was outright removed in macOS 26, so this patch set is always present if OS requires it
+        AppleHDA was outright removed in macOS Tahoe, so this patch set is always present if OS requires it
         """
+        if self._constants.allow_modern_audio is False:
+            return False
         return True
 
 
