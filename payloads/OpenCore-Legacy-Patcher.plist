@@ -7,11 +7,11 @@
 	<key>PatcherSupportPkg</key>
 	<string>v2.0.0</string>
 	<key>Time Patched</key>
-	<string>March 12, 2026 @ 18:36:48</string>
+	<string>March 12, 2026 @ 19:13:37</string>
 	<key>Commit URL</key>
 	<string></string>
 	<key>Kernel Debug Kit Used</key>
-	<string>Not applicable</string>
+	<string>/Library/Developer/KDKs/KDK_26.3.1_25D2128.kdk</string>
 	<key>Metal Library Used</key>
 	<string>Not applicable</string>
 	<key>OS Version</key>
@@ -36,6 +36,17 @@
 				<string>13.7.2-25</string>
 				<key>WiFiPeerToPeer.framework</key>
 				<string>13.7.2-25</string>
+			</dict>
+		</dict>
+	</dict>
+	<key>Modern Audio</key>
+	<dict>
+		<key>Overwrite System Volume</key>
+		<dict>
+			<key>/System/Library/Extensions</key>
+			<dict>
+				<key>AppleHDA.kext</key>
+				<string>26.0 Beta 1</string>
 			</dict>
 		</dict>
 	</dict>
