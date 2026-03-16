@@ -22,7 +22,9 @@ Starting with macOS Tahoe Beta 2, Apple removed the legacy `AppleHDA.kext`. This
 
 ### 🛠️ macOS 26.4 Compatibility Fixes
 *   **APFS-Only Environment:** Adapted the patching logic to handle the removal of HFS+ in macOS 26.4. The patcher now utilizes APFS for all internal resource mounting and operations.
-*   **Elevated hdiutil Permissions:** Fixed a critical issue where macOS 26.4 disallowed mounting disk images without root privileges. The patcher now correctly escalates via the Privileged Helper Tool.
+>   **Elevated hdiutil Permissions:** Fixed a critical issue where macOS 26.4 disallowed mounting disk images without root privileges.
+>
+> The patcher now correctly escalates via the Privileged Helper Tool.
 
 ---
 
@@ -50,8 +52,12 @@ Starting with macOS Tahoe Beta 2, Apple removed the legacy `AppleHDA.kext`. This
 ### ⚒️ [Build and run from source](https://github.com/YBronst/OCLP-YBronst/blob/main/SOURCE.md)
 
 ### 💾 Installation Requirements
-*   **Kernel Debug Kit (KDK):** Required for most root patches on macOS 13+. Use the new **"Download KDK"** button in the Help menu to fetch the latest version.
-*   **Patcher Resources:** This version relies on the [YBronst PatcherSupportPkg](https://github.com/YBronst/PatcherSupportPkg) for native Tahoe binaries.
+💡  **Before Running Post-Install Patches:**
+* **KDK is mandatory:** For macOS 13 through Tahoe (26.x), the Kernel Debug Kit must be installed for drivers like AppleHDA to link correctly. Use the Help > Download KDK button.
+⚠️ **Resource Dependency Notice**
+* **Patcher Resources:** This version relies on the [YBronst PatcherSupportPkg](https://github.com/YBronst/PatcherSupportPkg) for native Tahoe binaries.
+> **Important:** Please be aware that if this resource becomes unavailable for any reason (e.g., server downtime or repository removal),
+> the OCLP-3.1.7 Tahoe Patch Set will lose its ability to fetch the necessary binaries, and root patching will fail.
 
 ---
 
