@@ -61,12 +61,7 @@ Starting with macOS Tahoe Beta 2, Apple removed the legacy `AppleHDA.kext`. This
 
 ---
 
-## 📝 Change Log (v3.1.7)
-*   Full support for Darwin 25 (macOS Tahoe).
-*   Added "Modern Audio" toggle for AppleHDA restoration.
-*   Fixed `hdiutil` mounting permissions for macOS 26.4.
-*   Migrated internal DMG resources to APFS.
-*   Improved Help menu with KDK download support.
+## 📝 [Change Log](https://github.com/YBronst/OCLP-YBronst/blob/main/CHANGELOG.md)
 
 ---
 
