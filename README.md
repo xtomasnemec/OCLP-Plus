@@ -37,6 +37,15 @@ Starting with macOS Tahoe Beta 2, Apple removed the legacy `AppleHDA.kext`. This
 *   **Typical Value:** (CSR_ALLOW_UNTRUSTED_KEXTS | CSR_ALLOW_UNRESTRICTED_FS).
 *   **OpenCore config.plist:** NVRAM > Add > 7C436110-AB2A-4BBB-A880-FE41995C9F82 > csr-active-config <Data> <03080000>.
 *   **Clover config.plist:** Set RtVariables > CsrActiveConfig <string> 0x803.
+*   **Secure Boot Model:** To allow root patching for Wi-Fi and other drivers, Apple Secure Boot must be disabled.
+>   **OpenCore:** Set Misc > Security > SecureBootModel to Disabled.
+>
+>   **Clover:** Ensure RtVariables > HWTarget is NOT set (must be empty) or commented out (e.g., HWTarget?) to keep Apple Secure Boot inactive.
+
+### 🔄 Apply Changes: Reset NVRAM
+> To ensure these new security settings (SIP, AMFI, and Secure Boot) take effect, you MUST perform a Reset NVRAM after saving your config.plist.
+> OpenCore: Select "Reset NVRAM" from the boot picker menu (or press Space if it's hidden).
+> Clover: Press F11 at the boot screen to clear NVRAM and restart.
 
 ### ⚒️ [Build and run from source](https://github.com/YBronst/OCLP-YBronst/blob/main/SOURCE.md)
 
