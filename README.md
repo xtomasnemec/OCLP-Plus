@@ -37,8 +37,8 @@ Starting with macOS Tahoe Beta 2, Apple removed the legacy `AppleHDA.kext`. This
 *   **Note:** If you experience issues with third-party browsers (like Firefox) or camera/mic permissions, consider adding `ipc_control_port_options=0` to your boot-args as well.
 *   **SIP Requirements:** System Integrity Protection must be set properly.
 *   **Typical Value:** (CSR_ALLOW_UNTRUSTED_KEXTS | CSR_ALLOW_UNRESTRICTED_FS).
-*   **OpenCore config.plist:** NVRAM > Add > 7C436110-AB2A-4BBB-A880-FE41995C9F82 > csr-active-config <Data> <03080000>.
-*   **Clover config.plist:** Set RtVariables > CsrActiveConfig <string> 0x803.
+*   **OpenCore config.plist:** NVRAM > Add > 7C436110-AB2A-4BBB-A880-FE41995C9F82 > csr-active-config (data) <03080000>.
+*   **Clover config.plist:** Set RtVariables > CsrActiveConfig (string) 0x803.
 *   **Secure Boot Model:** To allow root patching for Wi-Fi and other drivers, Apple Secure Boot must be disabled.
 >   **OpenCore:** Set Misc > Security > SecureBootModel to Disabled.
 >
