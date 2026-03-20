@@ -33,7 +33,7 @@ Starting with macOS Tahoe Beta 2, Apple removed the legacy `AppleHDA.kext`. This
 ### 🔑 AMFI & Security
 
 *  **AMFI Alert:** To successfully bypass Apple Mobile file integrity checks, you must use either AMFIPass.kext with the `-amfipassbeta` boot argument or `amfi=0x80`. You can also use both together.
-*  **Note:** If you experience issues with third-party browsers (like Firefox) or camera/mic permissions, consider adding `ipc_control_port_options=0` to your boot-args as well.
+*  **Note:** If third-party browsers or camera/mic permissions fail when using `amfi=0x80`, try adding the `ipc_control_port_options=0` parameter to your boot settings.
 *  **SIP Requirements:** System Integrity Protection must be set properly.
 *  **Typical Value:** (CSR_ALLOW_UNTRUSTED_KEXTS | CSR_ALLOW_UNRESTRICTED_FS).
 *  **OpenCore config.plist:** NVRAM > Add > 7C436110-AB2A-4BBB-A880-FE41995C9F82 > csr-active-config (data) <03080000>.
