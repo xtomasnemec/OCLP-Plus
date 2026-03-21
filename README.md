@@ -68,6 +68,6 @@ Starting with macOS Tahoe Beta 2, Apple removed the legacy `AppleHDA.kext`. This
 *   *Full list of OCLP contributors can be found in the [original repository](https://github.com/dortania/OpenCore-Legacy-Patcher).*
 
 ## ⚖️ Disclaimer
-This is an **experimental fork** intended for advanced users and complex Hackintosh/Legacy Mac configurations. Use at your own risk.
+This is an **experimental Project** intended for advanced users and complex Hackintosh/Legacy Mac configurations. Use at your own risk.
 
 **Community Discussion:** [InsanelyMac Thread](https://www.insanelymac.com/forum/topic/362042-experimental-fork-of-oclp-300-nightly-–-wi-fi-airdropairplay-and-applehda-fully-working-under-tahoe/)
