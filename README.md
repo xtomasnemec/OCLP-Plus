@@ -3,7 +3,6 @@
 
 # [OCLP-Plus Tahoe Patch Set](https://github.com/YBronst/OCLP-Plus/releases)
 
-**Based on the lzhoang2801 Tahoe patchset and optimized for macOS 26.x builds.**
 </div>
 
 ## 🌟 Key Features
