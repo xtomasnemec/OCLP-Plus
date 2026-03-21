@@ -64,7 +64,7 @@ Starting with macOS Tahoe Beta 2, Apple removed the legacy `AppleHDA.kext`. This
 *   [Acidanthera](https://github.com/Acidanthera) (OpenCorePkg, Lilu, etc.)
 *   [Dortania Team](https://github.com/dortania) (Original OCLP authors)
 *   [lzhoang2801](https://github.com/kgp-macPro/OCLP-lzhoang2801) (Original Tahoe patchset)
-*   [YBronst](https://github.com/YBronst) (Fork maintainer and Tahoe optimizations)
+*   [YBronst](https://github.com/YBronst) (Developer and optimizer of tools for macOS Tahoe26.x.)
 *   *Full list of OCLP contributors can be found in the [original repository](https://github.com/dortania/OpenCore-Legacy-Patcher).*
 
 ## ⚖️ Disclaimer
