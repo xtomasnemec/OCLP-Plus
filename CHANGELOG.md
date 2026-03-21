@@ -1,11 +1,11 @@
 # OCLP-Plus changelog
 ## 3.1.8
 
-    * **Move JavaScriptCore patch for pre-AVX Macs** to RestrictEvents
-    * **OpenCorePkg 1.0.7** - release
-    * **Lilu 1.7.1** - release
-    * **RestrictEvents 1.1.7** - (rolling - b70aaa4)
-    * **PatcherSupportPkg 2.0.0** - release
+   * **Move JavaScriptCore patch for pre-AVX Macs** to RestrictEvents
+   * **OpenCorePkg** 1.0.7 - release
+   * **Lilu** 1.7.1 - release
+   * **RestrictEvents** 1.1.7 - (rolling - b70aaa4)
+   * **PatcherSupportPkg** 2.0.0 - release
 
 ## 3.1.7
 
