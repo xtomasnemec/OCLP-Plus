@@ -1,7 +1,7 @@
 <div align="center">
-<img src="https://github.com/YBronst/OpenCore-Legacy-Patcher/blob/main/docs/images/OC-Patcher.png"  alt="OC-Patcher Logo" width="256" />
+<img src="https://github.com/YBronst/OCLP-Plus/blob/main/docs/images/OC-Patcher.png"  alt="OC-Patcher Logo" width="256" />
 
-# [OpenCore-Legacy-Patcher Tahoe Patch Set](https://github.com/YBronst/OpenCore-Legacy-Patcher/releases)
+# [OCLP-Plus (Tahoe Patch Set)](https://github.com/YBronst/OCLP-Plus/releases)
 
 </div>
 
@@ -47,7 +47,7 @@ Starting with macOS Tahoe Beta 2, Apple removed the legacy `AppleHDA.kext`. This
 > OpenCore: Select "Reset NVRAM" from the boot picker menu (or press Space if it's hidden).
 > Clover: Press F11 at the boot screen to clear NVRAM and restart.
 
-### ⚒️ [Build and run from source](https://github.com/YBronst/OpenCore-Legacy-Patcher/blob/main/SOURCE.md)
+### ⚒️ [Build and run from source](https://github.com/YBronst/OCLP-Plus/blob/main/SOURCE.md)
 
 ### 💾 Installation Requirements
 💡  **Before Running Post-Install Patches:**
@@ -58,7 +58,7 @@ Starting with macOS Tahoe Beta 2, Apple removed the legacy `AppleHDA.kext`. This
 > **Important:** Please be aware that if this resource becomes unavailable for any reason (e.g., server downtime or repository removal),
 > the OCLP-3.1.7 Tahoe Patch Set will lose its ability to fetch the necessary binaries, and root patching will fail.
 
-## 📝 [Change Log](https://github.com/YBronst/OpenCore-Legacy-Patcher/blob/main/CHANGELOG.md)
+## 📝 [Change Log](https://github.com/YBronst/OCLP-Plus/blob/main/CHANGELOG.md)
 
 ## 📜 Credits
 *   [Acidanthera](https://github.com/Acidanthera) (OpenCorePkg, Lilu, etc.)
