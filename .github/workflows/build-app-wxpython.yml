@@ -12,7 +12,6 @@ jobs:
   build:
     name: Build wxPython
     runs-on: macos-15-intel
-    if: github.repository_owner == 'YBronst'
 
     env:
       # GitHub Information

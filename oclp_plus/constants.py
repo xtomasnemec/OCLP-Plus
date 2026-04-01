@@ -15,7 +15,7 @@ class Constants:
         # Patcher Versioning
         self.patcher_version:                 str = "3.1.9"  # OCLP-Plus
         self.patcher_support_pkg_version:     str = "2.0.0"  # PatcherSupportPkg
-        self.copyright_date:                  str = "Copyright © 2020-2026 Dortania and YBronst"
+        self.copyright_date:                  str = "Copyright © 2020-2026 Dortania, YBronst and xtomasnemec"
         self.patcher_name:                    str = "OCLP-Plus"
 
         # URLs
@@ -23,9 +23,9 @@ class Constants:
         self.discord_link:                    str = "https://discord.gg/rqdPgH8xSN"
         self.guide_link:                      str = "https://dortania.github.io/OpenCore-Legacy-Patcher/"
         self.kdk_support_pkg_link:            str = "https://github.com/dortania/KdkSupportPkg/releases"
-        self.repo_link:                       str = "https://github.com/YBronst/OCLP-Plus"
+        self.repo_link:                       str = "https://github.com/xtomasnemec/OCLP-Plus"
         self.installer_pkg_url:               str = f"{self.repo_link}/releases/download/{self.patcher_version}/AutoPkg-Assets.pkg"
-        self.installer_pkg_url_nightly:       str = "http://nightly.link/YBronst/OCLP-Plus/workflows/build-app-wxpython/main/AutoPkg-Assets.pkg.zip"
+        self.installer_pkg_url_nightly:       str = "http://nightly.link/xtomasnemec/OCLP-Plus/workflows/build-app-wxpython/main/AutoPkg-Assets.pkg.zip"
 
         # OpenCore Versioning
         # https://github.com/acidanthera/OpenCorePkg
