@@ -1,10 +1,10 @@
 # OCLP-Plus changelog
 ## 3.1.9
 
-- Re-enable legacy hardware patches (Intel, NVIDIA, AMD, legacy wireless, etc.)
-- Only include these patches when the system's XNU major version is less than 25 (Tahoe)
-- Ensure ModernWireless and ModernAudio remain enabled for all versions (including Tahoe and newer)
-- Maintain the original patch detection order
+- Legacy patches (Intel/Nvidia/AMD/Wireless) re-enabled for XNU < 25.
+- Strict filter for Tahoe (XNU 25+): Legacy patches excluded to prevent instability (AppleHDA/Wireless) and root patching failures.
+- ModernWireless/Audio remain enabled for all versions (including Tahoe).
+- Maintained original patch detection order.
 
 ## 3.1.8
 
