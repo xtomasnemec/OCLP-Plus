@@ -71,6 +71,7 @@ class BuildWirelessNetworking:
                     self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += f" -brcmfxwowl"
             elif self.computer.wifi.chipset == device_probe.Broadcom.Chipsets.AirPortBrcm4360:
                 self._wifi_fake_id()
+                self.brcm4360_nvram()
             elif self.computer.wifi.chipset == device_probe.Broadcom.Chipsets.AirPortBrcm4331:
                 support.BuildSupport(self.model, self.constants, self.config).enable_kext("corecaptureElCap.kext", self.constants.corecaptureelcap_version, self.constants.corecaptureelcap_path)
                 support.BuildSupport(self.model, self.constants, self.config).enable_kext("IO80211ElCap.kext", self.constants.io80211elcap_version, self.constants.io80211elcap_path)
@@ -142,10 +143,8 @@ class BuildWirelessNetworking:
 
     def brcm4360_nvram(self) -> None:
         # brcm4360 requires dart=0 in bootargs
-        self.config.setdefault("NVRAM", {}).setdefault("Add", {}).setdefault("7C436110-AB2A-4BBB-A880-FE41995C9F82", {}).setdefault("boot-args", "")
-        boot_args = self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"]
-        if "dart=0" not in boot_args.split():
-            self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] = (boot_args + " dart=0").strip()
+        logging.info("- Adding dart=0 to boot-args for BCM943224/94331/4360/435 support")
+        self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += f" dart=0"
 
     def _wifi_fake_id(self) -> None:
         """
