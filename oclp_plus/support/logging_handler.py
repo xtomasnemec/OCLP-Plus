@@ -9,7 +9,10 @@ import logging
 import threading
 import traceback
 import subprocess
-import applescript
+try:
+    import applescript  # type: ignore
+except Exception:  # pragma: no cover
+    applescript = None
 
 from pathlib import Path
 from datetime import datetime
@@ -68,19 +71,28 @@ class InitializeLoggingSupport:
         Initialize logging framework storage path
         """
 
-        base_path = Path("~/Library/Logs").expanduser()
-        if not base_path.exists() or str(base_path).startswith("/var/root/"):
-            # Likely in an installer environment, store in /Users/Shared
-            base_path = Path("/Users/Shared")
+        if os.name == "nt":
+            base_root = Path(os.getenv("LOCALAPPDATA") or Path.home() / "AppData/Local")
+            base_path = base_root / "OCLP-Plus" / "Logs"
+            try:
+                base_path.mkdir(parents=True, exist_ok=True)
+            except Exception as e:
+                print(f"Failed to create log folder: {e}")
+                base_path = Path.cwd()
         else:
-            # create Dortania folder if it doesn't exist
-            base_path = base_path / "Dortania"
-            if not base_path.exists():
-                try:
-                    base_path.mkdir()
-                except Exception as e:
-                    print(f"Failed to create Dortania folder: {e}")
-                    base_path = Path("/Users/Shared")
+            base_path = Path("~/Library/Logs").expanduser()
+            if not base_path.exists() or str(base_path).startswith("/var/root/"):
+                # Likely in an installer environment, store in /Users/Shared
+                base_path = Path("/Users/Shared")
+            else:
+                # create Dortania folder if it doesn't exist
+                base_path = base_path / "Dortania"
+                if not base_path.exists():
+                    try:
+                        base_path.mkdir()
+                    except Exception as e:
+                        print(f"Failed to create Dortania folder: {e}")
+                        base_path = Path("/Users/Shared")
 
         self.log_filepath = Path(f"{base_path}/{self.log_filename}").expanduser()
         self.constants.log_filepath = self.log_filepath
@@ -209,6 +221,9 @@ class InitializeLoggingSupport:
 
             error_msg += "\n\nReveal log file?"
 
+            if applescript is None or sys.platform != "darwin":
+                return
+
             # Ask user if they want to send crash report
             try:
                 result = applescript.AppleScript(f'display dialog "{error_msg}" with title "OCLP-Plus ({self.constants.patcher_version})" buttons {{"Yes", "No"}} default button "Yes" with icon caution').run()
@@ -250,10 +265,13 @@ class InitializeLoggingSupport:
         logging.info(f"  XNU Build: {self.constants.detected_os_build}")
         logging.info(f"  macOS Version: {self.constants.detected_os_version}")
         logging.info("Debug Properties:")
-        logging.info(f"  Effective User ID: {os.geteuid()}")
-        logging.info(f"  Effective Group ID: {os.getegid()}")
-        logging.info(f"  Real User ID: {os.getuid()}")
-        logging.info(f"  Real Group ID: {os.getgid()}")
+        if hasattr(os, "geteuid"):
+            logging.info(f"  Effective User ID: {os.geteuid()}")
+            logging.info(f"  Effective Group ID: {os.getegid()}")
+            logging.info(f"  Real User ID: {os.getuid()}")
+            logging.info(f"  Real Group ID: {os.getgid()}")
+        else:
+            logging.info("  User/Group IDs: N/A (non-POSIX host)")
         logging.info("  Arguments passed to Patcher:")
         for arg in sys.argv:
             logging.info(f"    {arg}")

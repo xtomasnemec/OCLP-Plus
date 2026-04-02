@@ -12,13 +12,20 @@ import argparse
 import binascii
 import plistlib
 import subprocess
-import py_sip_xnu
+
+try:
+    import py_sip_xnu  # type: ignore
+except Exception:  # pragma: no cover
+    py_sip_xnu = None
 
 from pathlib import Path
 
 from .. import constants
 
-from ..detections import ioreg
+try:
+    from ..detections import ioreg
+except Exception:  # pragma: no cover
+    ioreg = None
 
 from ..datasets import (
     os_data,
@@ -140,6 +147,11 @@ def check_filesystem_type():
 
 
 def csr_decode(os_sip):
+    if py_sip_xnu is None:
+        # Non-macOS hosts (or missing dependency) cannot query SIP.
+        # Safest default is to assume SIP is enabled.
+        return True
+
     sip_int = py_sip_xnu.SipXnu().get_sip_status().value
     for i,  current_sip_bit in enumerate(sip_data.system_integrity_protection.csr_values):
         if sip_int & (1 << i):
@@ -352,6 +364,9 @@ def check_command_line_tools():
 def get_nvram(variable: str, uuid: str = None, *, decode: bool = False):
     # TODO: Properly fix for El Capitan, which does not print the XML representation even though we say to
 
+    if ioreg is None or getattr(ioreg, "IOREG_AVAILABLE", False) is False:
+        return None
+
     if uuid is not None:
         uuid += ":"
     else:
@@ -384,6 +399,9 @@ def get_nvram(variable: str, uuid: str = None, *, decode: bool = False):
 def get_rom(variable: str, *, decode: bool = False):
     # TODO: Properly fix for El Capitan, which does not print the XML representation even though we say to
 
+    if ioreg is None or getattr(ioreg, "IOREG_AVAILABLE", False) is False:
+        return None
+
     rom = ioreg.IORegistryEntryFromPath(ioreg.kIOMasterPortDefault, "IODeviceTree:/rom".encode())
 
     value = ioreg.IORegistryEntryCreateCFProperty(rom, variable, ioreg.kCFAllocatorDefault, ioreg.kNilOptions)
@@ -400,6 +418,9 @@ def get_rom(variable: str, *, decode: bool = False):
     return value
 
 def get_firmware_vendor(*, decode: bool = False):
+    if ioreg is None or getattr(ioreg, "IOREG_AVAILABLE", False) is False:
+        return None
+
     efi = ioreg.IORegistryEntryFromPath(ioreg.kIOMasterPortDefault, "IODeviceTree:/efi".encode())
     value = ioreg.IORegistryEntryCreateCFProperty(efi, "firmware-vendor", ioreg.kCFAllocatorDefault, ioreg.kNilOptions)
     ioreg.IOObjectRelease(efi)
@@ -511,6 +532,9 @@ def get_preboot_uuid() -> str:
     """
     Get the UUID of the Preboot volume
     """
+    if ioreg is None or getattr(ioreg, "IOREG_AVAILABLE", False) is False:
+        return ""
+
     args = ["/usr/sbin/ioreg", "-a", "-n", "chosen", "-p", "IODeviceTree", "-r"]
     output = plistlib.loads(subprocess.run(args, stdout=subprocess.PIPE).stdout)
     return output[0]["apfs-preboot-uuid"].strip(b"\0").decode()

@@ -139,12 +139,14 @@ class HardwarePatchsetDetection:
 
         self._hardware_variants.append(modern_audio.ModernAudio)
 
+        # pci webcam fix still works on tahoe
+        self._hardware_variants.append(pcie_webcam.PCIeFaceTimeCamera)
+
         if self._xnu_major < os_data.tahoe.value:
             self._hardware_variants += [
                 display_backlight.DisplayBacklight,
                 gmux.GraphicsMultiplexer,
                 keyboard_backlight.KeyboardBacklight,
-                pcie_webcam.PCIeFaceTimeCamera,
                 t1_security.T1SecurityChip,
                 usb11.USB11Controller,
                 cpu_missing_avx.CPUMissingAVX,

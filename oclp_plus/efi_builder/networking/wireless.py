@@ -116,6 +116,7 @@ class BuildWirelessNetworking:
             support.BuildSupport(self.model, self.constants, self.config).get_kext_by_bundle_path("IO80211ElCap.kext/Contents/PlugIns/AirPortAtheros40.kext")["Enabled"] = True
         elif smbios_data.smbios_dictionary[self.model]["Wireless Model"] == device_probe.Broadcom.Chipsets.AirportBrcmNIC:
             support.BuildSupport(self.model, self.constants, self.config).enable_kext("AirportBrcmFixup.kext", self.constants.airportbcrmfixup_version, self.constants.airportbcrmfixup_path)
+            self.brcm4360_nvram()
 
         if smbios_data.smbios_dictionary[self.model]["Wireless Model"] in [device_probe.Broadcom.Chipsets.AirportBrcmNIC, device_probe.Broadcom.Chipsets.AirPortBrcm4360]:
             support.BuildSupport(self.model, self.constants, self.config).enable_kext("IOSkywalkFamily.kext", self.constants.ioskywalk_version, self.constants.ioskywalk_path)
@@ -143,8 +144,13 @@ class BuildWirelessNetworking:
 
     def brcm4360_nvram(self) -> None:
         # brcm4360 requires dart=0 in bootargs
-        logging.info("- Adding dart=0 to boot-args for BCM943224/94331/4360/435 support")
-        self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += f" dart=0"
+        boot_args_key = "7C436110-AB2A-4BBB-A880-FE41995C9F82"
+        boot_args = self.config["NVRAM"]["Add"][boot_args_key].get("boot-args", "")
+        if "dart=0" in boot_args.split():
+            return
+
+        logging.info("- Adding dart=0 to boot-args for BCM943224/94331/4360/4350 support")
+        self.config["NVRAM"]["Add"][boot_args_key]["boot-args"] = (boot_args + " dart=0").strip()
 
     def _wifi_fake_id(self) -> None:
         """

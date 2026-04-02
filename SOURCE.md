@@ -20,7 +20,7 @@ Once Python is installed, open Terminal and run the following:
 # Move into a directory to store the project
 cd ~/Developer
 # Clone project
-git https://github.com/YBronst/OCLP-Plus.git
+git https://github.com/xtomasnemec/OCLP-Plus.git
 # Move into Project directory
 cd ./OCLP-Plus
 # Install Python dependencies used by the project

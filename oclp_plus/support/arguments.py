@@ -14,11 +14,7 @@ from pathlib import Path
 from . import subprocess_wrapper
 
 from .. import constants
-
-from ..wx_gui import gui_entry
 from ..efi_builder import build
-from ..sys_patch import sys_patch
-from ..sys_patch.auto_patcher import StartAutomaticPatching
 
 from ..datasets import (
     model_array,
@@ -27,8 +23,7 @@ from ..datasets import (
 
 from . import (
     utilities,
-    defaults,
-    validation
+    defaults
 )
 
 
@@ -83,6 +78,7 @@ class arguments:
         Enter validation mode
         """
         logging.info("Set Validation Mode")
+        from . import validation
         validation.PatcherValidation(self.constants)
 
 
@@ -90,6 +86,8 @@ class arguments:
         """
         Start root volume patching
         """
+
+        from ..sys_patch import sys_patch
 
         logging.info("Set System Volume patching")
         if "Library/InstallerSandboxes/" in str(self.constants.payload_path):
@@ -107,6 +105,8 @@ class arguments:
         """
         Start root volume unpatching
         """
+
+        from ..sys_patch import sys_patch
         logging.info("Set System Volume unpatching")
         sys_patch.PatchSysVolume(self.constants.custom_model or self.constants.computer.real_model, self.constants, None).start_unpatch()
 
@@ -115,6 +115,8 @@ class arguments:
         """
         Start root volume auto patching
         """
+
+        from ..sys_patch.auto_patcher import StartAutomaticPatching
 
         logging.info("Set Auto patching")
         StartAutomaticPatching(self.constants).start_auto_patch()
@@ -143,6 +145,8 @@ class arguments:
         """
         Fetch KDK for incoming OS
         """
+
+        from ..wx_gui import gui_entry
         results = subprocess.run(["/bin/ps", "-ax"], stdout=subprocess.PIPE)
         if results.stdout.decode("utf-8").count("OCLP-Plus --cache_os") > 1:
             logging.info("Another instance of OS caching is running, exiting")

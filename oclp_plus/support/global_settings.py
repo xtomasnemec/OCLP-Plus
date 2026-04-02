@@ -7,6 +7,7 @@ This is to ensure compatibility when running without a user
 ie. during automated patching
 """
 
+import os
 import logging
 import plistlib
 
@@ -20,7 +21,11 @@ class GlobalEnviromentSettings:
 
     def __init__(self) -> None:
         self.file_name:              str = ".com.dortania.opencore-legacy-patcher.plist"
-        self.global_settings_folder: str = "/Users/Shared"
+        if os.name == "nt":
+            base_root = Path(os.getenv("PROGRAMDATA") or os.getenv("ALLUSERSPROFILE") or (Path.home() / "AppData/Local"))
+            self.global_settings_folder = str(base_root / "OCLP-Plus")
+        else:
+            self.global_settings_folder = "/Users/Shared"
         self.global_settings_plist:  str = f"{self.global_settings_folder}/{self.file_name}"
 
         self._generate_settings_file()
@@ -86,8 +91,9 @@ class GlobalEnviromentSettings:
         if Path(self.global_settings_plist).exists():
             return
         try:
+            Path(self.global_settings_folder).mkdir(parents=True, exist_ok=True)
             plistlib.dump({"Developed by Dortania": True,}, Path(self.global_settings_plist).open("wb"))
-        except PermissionError:
+        except (PermissionError, FileNotFoundError):
             logging.info("Permission error: Unable to write to global settings file")
 
 
