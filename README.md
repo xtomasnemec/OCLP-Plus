@@ -9,7 +9,7 @@
 
 ## Compatible models:
 ```
-MacBookPro14,x
+MacBookPro14,x (14,2 and 14,3 - No T1 (TouchID) support)
 MacBook10,1
 iMac18,x - 19,1 (No Fusion drive support!)
 ```

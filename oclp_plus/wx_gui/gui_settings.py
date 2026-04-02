@@ -86,7 +86,13 @@ class SettingsFrame(wx.Frame):
         if not Path("~/.dortania_developer").expanduser().exists():
             tabs.remove("Developer")
         for tab in tabs:
-            panel = wx.Panel(notebook)
+            if tab == "Root Patching":
+                panel = wx.ScrolledWindow(notebook)
+                panel.SetScrollRate(0, 1)
+                panel.ShowScrollbars(wx.SHOW_SB_NEVER, wx.SHOW_SB_NEVER)
+                panel.Bind(wx.EVT_MOUSEWHEEL, lambda event, target_panel=panel: self._on_smooth_mouse_scroll(event, target_panel))
+            else:
+                panel = wx.Panel(notebook)
             notebook.AddPage(panel, tab)
 
         sizer.Add(notebook, 1, wx.EXPAND | wx.ALL, 10)
@@ -227,6 +233,38 @@ class SettingsFrame(wx.Frame):
 
                 if height > lowest_height_reached:
                     lowest_height_reached = height
+
+            if isinstance(panel, wx.ScrolledWindow):
+                panel.SetVirtualSize((560, max(lowest_height_reached + 80, 620)))
+
+
+    def _on_smooth_mouse_scroll(self, event: wx.MouseEvent, panel: wx.ScrolledWindow) -> None:
+        """
+        Smooth mouse-wheel scrolling for hidden-scrollbar panels.
+        """
+
+        if not hasattr(self, "_wheel_scroll_remainder"):
+            self._wheel_scroll_remainder = {}
+
+        panel_id = panel.GetId()
+        delta = event.GetWheelDelta() or 120
+        remainder = self._wheel_scroll_remainder.get(panel_id, 0) + event.GetWheelRotation()
+
+        steps = int(remainder / delta)
+        self._wheel_scroll_remainder[panel_id] = remainder - (steps * delta)
+
+        if steps == 0:
+            return
+
+        current_x, current_y = panel.GetViewStart()
+        client_h = panel.GetClientSize().GetHeight()
+        virtual_h = panel.GetVirtualSize().GetHeight()
+        max_y = max(0, virtual_h - client_h)
+
+        scroll_step_px = 18
+        target_y = current_y - (steps * scroll_step_px)
+        target_y = max(0, min(target_y, max_y))
+        panel.Scroll(current_x, target_y)
 
 
     def _settings(self) -> dict:
@@ -726,6 +764,18 @@ class SettingsFrame(wx.Frame):
                         "for the current OS version.",
                     ],
                     "condition": self.constants.detected_os >= os_data.os_data.tahoe
+                },
+                "Enable untested Root Patches": {
+                    "type": "checkbox",
+                    "value": self.constants.allow_untested_root_patches,
+                    "variable": "allow_untested_root_patches",
+                    "description": [
+                        "Enable untested Root Patches.",
+                        "(T1, Legacy Metal etc.)",
+                        "Use at your own risk,",
+                        "most of them probably won't work",
+                        "or destroy your macOS installation.",
+                    ]
                 },
                 "Non-Metal Configuration": {
                     "type": "title",

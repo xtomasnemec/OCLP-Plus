@@ -57,18 +57,23 @@ class BuildWirelessNetworking:
                 support.BuildSupport(self.model, self.constants, self.config).get_kext_by_bundle_path("IO80211FamilyLegacy.kext/Contents/PlugIns/AirPortBrcmNIC.kext")["Enabled"] = True
                 support.BuildSupport(self.model, self.constants, self.config).get_item_by_kv(self.config["Kernel"]["Block"], "Identifier", "com.apple.iokit.IOSkywalkFamily")["Enabled"] = True
             # This works around OCLP spoofing the Wifi card and therefore unable to actually detect the correct device
-            if self.computer.wifi.chipset == device_probe.Broadcom.Chipsets.AirportBrcmNIC and self.constants.validate is False and self.computer.wifi.country_code:
-                support.BuildSupport(self.model, self.constants, self.config).enable_kext("AirportBrcmFixup.kext", self.constants.airportbcrmfixup_version, self.constants.airportbcrmfixup_path)
-                logging.info(f"- Setting Wireless Card's Country Code: {self.computer.wifi.country_code}")
-                if self.computer.wifi.pci_path:
-                    arpt_path = self.computer.wifi.pci_path
-                    logging.info(f"- Found ARPT device at {arpt_path}")
-                    self.config["DeviceProperties"]["Add"][arpt_path] = {"brcmfx-country": self.computer.wifi.country_code}
-                else:
-                    self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += f" brcmfx-country={self.computer.wifi.country_code}"
-                if self.constants.enable_wake_on_wlan is True:
-                    logging.info("- Enabling Wake on WLAN support")
-                    self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += f" -brcmfxwowl"
+            if self.computer.wifi.chipset == device_probe.Broadcom.Chipsets.AirportBrcmNIC:
+                if self.constants.validate is False and self.computer.wifi.country_code:
+                    support.BuildSupport(self.model, self.constants, self.config).enable_kext("AirportBrcmFixup.kext", self.constants.airportbcrmfixup_version, self.constants.airportbcrmfixup_path)
+                    logging.info(f"- Setting Wireless Card's Country Code: {self.computer.wifi.country_code}")
+                    if self.computer.wifi.pci_path:
+                        arpt_path = self.computer.wifi.pci_path
+                        logging.info(f"- Found ARPT device at {arpt_path}")
+                        self.config["DeviceProperties"]["Add"][arpt_path] = {"brcmfx-country": self.computer.wifi.country_code}
+                    else:
+                        self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += f" brcmfx-country={self.computer.wifi.country_code}"
+                    if self.constants.enable_wake_on_wlan is True:
+                        logging.info("- Enabling Wake on WLAN support")
+                        self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += f" -brcmfxwowl"
+
+                # AirPortBrcmNIC (BCM943224/94331/4360/4350 family) can require dart=0
+                self.brcm4360_nvram()
+
             elif self.computer.wifi.chipset == device_probe.Broadcom.Chipsets.AirPortBrcm4360:
                 self._wifi_fake_id()
                 self.brcm4360_nvram()

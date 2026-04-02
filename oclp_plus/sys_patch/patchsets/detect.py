@@ -102,6 +102,10 @@ class HardwarePatchsetDetection:
                  ) -> None:
         self._constants = constants
 
+        if self._constants.allow_untested_root_patches:
+            logging.warning("Allowing untested root patches may cause issues on unsupported OS versions. Proceed with caution.")
+            logging.warning("Untested root patches are patches that have not been tested on the current OS version, but have been tested on other versions. These patches may work, but there is a risk of instability or other issues.")
+
         self._xnu_major  = xnu_major  or self._constants.detected_os
         self._xnu_minor  = xnu_minor  or self._constants.detected_os_minor
         self._os_build   = os_build   or self._constants.detected_os_build
@@ -110,7 +114,7 @@ class HardwarePatchsetDetection:
 
         self._hardware_variants = []
 
-        if self._xnu_major < os_data.tahoe.value:
+        if self._xnu_major < os_data.tahoe.value or self._constants.allow_untested_root_patches is True:
             self._hardware_variants += [
                 intel_iron_lake.IntelIronLake,
                 intel_sandy_bridge.IntelSandyBridge,
@@ -134,7 +138,7 @@ class HardwarePatchsetDetection:
 
         self._hardware_variants.append(modern_wireless.ModernWireless)
 
-        if self._xnu_major < os_data.tahoe.value:
+        if self._xnu_major < os_data.tahoe.value or self._constants.allow_untested_root_patches is True:
             self._hardware_variants.append(legacy_audio.LegacyAudio)
 
         self._hardware_variants.append(modern_audio.ModernAudio)
@@ -142,7 +146,7 @@ class HardwarePatchsetDetection:
         # pci webcam fix still works on tahoe
         self._hardware_variants.append(pcie_webcam.PCIeFaceTimeCamera)
 
-        if self._xnu_major < os_data.tahoe.value:
+        if self._xnu_major < os_data.tahoe.value or self._constants.allow_untested_root_patches is True:
             self._hardware_variants += [
                 display_backlight.DisplayBacklight,
                 gmux.GraphicsMultiplexer,

@@ -101,8 +101,25 @@ class SysPatchDisplayFrame(wx.Frame):
         progress_bar_animation.stop_pulse()
 
         available_label.SetLabel("Available patches for your system:")
+        available_label.SetFont(gui_support.font_factory(13, wx.FONTWEIGHT_BOLD))
         available_label.Centre(wx.HORIZONTAL)
 
+        allow_untested_root_patches = (
+            getattr(getattr(self, "constants", None), "allow_untested_root_patches", False)
+            or getattr(getattr(self, "_constants", None), "allow_untested_root_patches", False)
+        )
+
+        if allow_untested_root_patches is True:
+            available_label.SetLabel(
+                "You have enabled untested Root Patches!" "\n"
+                "Be careful, these may break your system!" "\n\n"
+                "Available patches for your system:"
+            )
+            available_label.SetFont(gui_support.font_factory(13, wx.FONTWEIGHT_BOLD))
+            available_label.Wrap(frame.GetSize()[0] - 30)
+            available_label.Centre(wx.HORIZONTAL)
+
+        available_label_bottom = available_label.GetPosition()[1] + available_label.GetSize()[1]
 
         can_unpatch: bool = not patches[HardwarePatchsetValidation.UNPATCHING_NOT_POSSIBLE]
 
@@ -115,7 +132,7 @@ class SysPatchDisplayFrame(wx.Frame):
 
         if not patches:
             # Prompt user with no patches found
-            patch_label = wx.StaticText(frame, label="No patches required", pos=(-1, available_label.GetPosition()[1] + 20))
+            patch_label = wx.StaticText(frame, label="No patches required", pos=(-1, available_label_bottom + 20))
             patch_label.SetFont(gui_support.font_factory(13, wx.FONTWEIGHT_NORMAL))
             patch_label.Centre(wx.HORIZONTAL)
 
@@ -123,7 +140,7 @@ class SysPatchDisplayFrame(wx.Frame):
             # Add Label for each patch
             i = 0
             if no_new_patches is True:
-                patch_label = wx.StaticText(frame, label="All applicable patches already installed", pos=(-1, available_label.GetPosition()[1] + 20))
+                patch_label = wx.StaticText(frame, label="All applicable patches already installed", pos=(-1, available_label_bottom + 20))
                 patch_label.SetFont(gui_support.font_factory(13, wx.FONTWEIGHT_NORMAL))
                 patch_label.Centre(wx.HORIZONTAL)
                 i = i + 20
@@ -133,7 +150,7 @@ class SysPatchDisplayFrame(wx.Frame):
                     if (not patch.startswith("Settings") and not patch.startswith("Validation") and patches[patch] is True):
                         if len(patch) > len(longest_patch):
                             longest_patch = patch
-                anchor = wx.StaticText(frame, label=longest_patch, pos=(-1, available_label.GetPosition()[1] + 20))
+                anchor = wx.StaticText(frame, label=longest_patch, pos=(-1, available_label_bottom + 20))
                 anchor.SetFont(gui_support.font_factory(13, wx.FONTWEIGHT_NORMAL))
                 anchor.Centre(wx.HORIZONTAL)
                 anchor.Hide()
@@ -143,7 +160,7 @@ class SysPatchDisplayFrame(wx.Frame):
                     if (not patch.startswith("Settings") and not patch.startswith("Validation") and patches[patch] is True):
                         i = i + 20
                         logging.info(f"- {patch}")
-                        patch_label = wx.StaticText(frame, label=f"- {patch}", pos=(anchor.GetPosition()[0], available_label.GetPosition()[1] + i))
+                        patch_label = wx.StaticText(frame, label=f"- {patch}", pos=(anchor.GetPosition()[0], available_label_bottom + i))
                         patch_label.SetFont(gui_support.font_factory(13, wx.FONTWEIGHT_NORMAL))
 
                 if i == 20:
