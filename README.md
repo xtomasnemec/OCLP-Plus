@@ -9,7 +9,7 @@
 
 ## Compatible models:
 ```
-MacBookPro14,1 (14,2 and 14,3 - No T1 support!)
+MacBookPro14,1 (14,2 - No T1 support! 14,3 - No T1 and dGPU support!)
 MacBook10,1
 iMac18,x - 19,x (No Fusion drive support! Upgrade to an SSD!)
 ```

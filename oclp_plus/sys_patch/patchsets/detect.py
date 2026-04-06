@@ -146,13 +146,18 @@ class HardwarePatchsetDetection:
         # pci webcam fix still works on tahoe
         self._hardware_variants.append(pcie_webcam.PCIeFaceTimeCamera)
 
+        # These patchsets do not rely on Tahoe-specific PatcherSupportPkg folder variants
+        # and have historically remained stable across newer OS releases.
+        self._hardware_variants += [
+            display_backlight.DisplayBacklight,
+            usb11.USB11Controller,
+        ]
+
         if self._xnu_major < os_data.tahoe.value or self._constants.allow_untested_root_patches is True:
             self._hardware_variants += [
-                display_backlight.DisplayBacklight,
                 gmux.GraphicsMultiplexer,
                 keyboard_backlight.KeyboardBacklight,
                 t1_security.T1SecurityChip,
-                usb11.USB11Controller,
                 cpu_missing_avx.CPUMissingAVX,
             ]
 
