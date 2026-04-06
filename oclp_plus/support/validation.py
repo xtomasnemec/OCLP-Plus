@@ -212,32 +212,16 @@ class PatcherValidation:
 
         self._unmount_dmg()
 
-        attach_cmd = [
-            "/usr/bin/hdiutil", "attach", "-noverify", f"{self.constants.payload_local_binaries_root_path_dmg}",
-            "-mountpoint", Path(self.constants.payload_path / Path("Universal-Binaries")),
-            "-nobrowse",
-            "-shadow", Path(self.constants.payload_path / Path("Universal-Binaries_overlay")),
-        ]
-
-        # hdiutil's encrypted image options differ across macOS versions / CI images.
-        # Prefer -passphrase when supported, otherwise fall back to -stdinpass.
-        help_out = subprocess.run(
-            ["/usr/bin/hdiutil", "attach", "-help"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-        ).stdout.decode(errors="ignore")
-
-        if "-passphrase" in help_out:
-            attach_cmd += ["-passphrase", "password"]
-            output = subprocess.run(attach_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        else:
-            attach_cmd += ["-stdinpass"]
-            output = subprocess.run(
-                attach_cmd,
-                input=b"password\n",
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-            )
+        output = subprocess.run(
+            [
+                "/usr/bin/hdiutil", "attach", "-noverify", f"{self.constants.payload_local_binaries_root_path_dmg}",
+                "-mountpoint", Path(self.constants.payload_path / Path("Universal-Binaries")),
+                "-nobrowse",
+                "-shadow", Path(self.constants.payload_path / Path("Universal-Binaries_overlay")),
+                "-passphrase", "password"
+            ],
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
 
         if output.returncode != 0:
             logging.info("Failed to mount Universal-Binaries.dmg")
