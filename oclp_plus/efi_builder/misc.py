@@ -384,22 +384,7 @@ xw
         if self.constants.oc_timeout != 5:
             logging.info(f"- Setting custom OpenCore picker timeout to {self.constants.oc_timeout} seconds")
             self.config["Misc"]["Boot"]["Timeout"] = self.constants.oc_timeout
-
-        # Picker theme (OpenCanopy)
-        # PickerVariant is a relative path within OpenCore's Resources directory
-        # (for example: Resources/Image/<PickerVariant> and Resources/Label/<PickerVariant>)
-        picker_variant = "xtomasnemec\\OpenCore26"
-        if self.config["Misc"]["Boot"].get("PickerVariant") != picker_variant:
-            logging.info(f"- Setting OpenCore picker variant to: {picker_variant}")
-        self.config["Misc"]["Boot"]["PickerVariant"] = picker_variant
-
-        expected_image_path = self.constants.resources_path / Path("Image") / Path(picker_variant.replace("\\", "/"))
-        expected_label_path = self.constants.resources_path / Path("Label") / Path(picker_variant.replace("\\", "/"))
-        if not expected_image_path.exists() or not expected_label_path.exists():
-            logging.warning("- PickerVariant resources missing; OpenCanopy may render incorrectly")
-            logging.warning(f"  - Expected: {expected_image_path}")
-            logging.warning(f"  - Expected: {expected_label_path}")
-
+        
         if self.constants.vault is True:
             logging.info("- Setting Vault configuration")
             self.config["Misc"]["Security"]["Vault"] = "Secure"
