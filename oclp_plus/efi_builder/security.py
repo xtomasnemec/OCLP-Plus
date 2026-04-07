@@ -39,6 +39,11 @@ class BuildSecurity:
         Kick off Security Build Process
         """
 
+        amfipass_eligible = False
+        if self.model in smbios_data.smbios_dictionary:
+            amfipass_eligible = smbios_data.smbios_dictionary[self.model]["Max OS Supported"] < os_data.os_data.sonoma
+        amfipass_prefer_over_amfi_arg = amfipass_eligible and self.constants.detected_os >= os_data.os_data.tahoe
+
         if self.constants.sip_status is False or self.constants.custom_sip_value:
             # Work-around 12.3 bug where Electron apps no longer launch with SIP lowered
             # Unknown whether this is intended behavior or not, revisit with 12.4
@@ -73,8 +78,11 @@ class BuildSecurity:
             # In Ventura, LV patch broke. For now, add AMFI arg
             # Before merging into mainline, this needs to be resolved
             if self.constants.disable_amfi is True:
-                logging.info("- Disabling AMFI")
-                self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += " amfi=0x80"
+                if amfipass_prefer_over_amfi_arg:
+                    logging.info("- AMFIPass enabled on Tahoe, skipping amfi=0x80")
+                else:
+                    logging.info("- Disabling AMFI")
+                    self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += " amfi=0x80"
             else:
                 logging.info("- Disabling Library Validation")
             support.BuildSupport(self.model, self.constants, self.config).get_item_by_kv(self.config["Kernel"]["Patch"], "Comment", "Disable Library Validation Enforcement")["Enabled"] = True
@@ -88,6 +96,13 @@ class BuildSecurity:
             logging.info("- Disabling SecureBootModel")
             self.config["Misc"]["Security"]["SecureBootModel"] = "Disabled"
 
-        if smbios_data.smbios_dictionary[self.model]["Max OS Supported"] < os_data.os_data.sonoma:
+        if amfipass_eligible:
             logging.info("- Enabling AMFIPass")
             support.BuildSupport(self.model, self.constants, self.config).enable_kext("AMFIPass.kext", self.constants.amfipass_version, self.constants.amfipass_path)
+
+            if amfipass_prefer_over_amfi_arg:
+                nvram_guid = "7C436110-AB2A-4BBB-A880-FE41995C9F82"
+                boot_args = self.config["NVRAM"]["Add"][nvram_guid]["boot-args"]
+                if "amfi=0x80" in boot_args:
+                    logging.info("- Removing amfi=0x80 from boot-args (AMFIPass)")
+                    self.config["NVRAM"]["Add"][nvram_guid]["boot-args"] = " ".join([arg for arg in boot_args.split() if arg != "amfi=0x80"])
