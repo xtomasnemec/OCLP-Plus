@@ -3,6 +3,8 @@ name: CI - Build wxPython
 on:
   push:
     paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
       - 'docs/**'
   workflow_dispatch:
   release:

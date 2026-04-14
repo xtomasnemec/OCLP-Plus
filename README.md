@@ -42,6 +42,9 @@ Restores the `AppleHDA.kext`. Works for all non-T2 Macs that had native audio in
 *  **Manual Toggle:** A new "Modern Audio" toggle in the Root Patches menu allows you to enable or disable this restoration manually.
 *  **KDK Integration:** Automatically handles the necessary Kernel Debug Kit (KDK) requirements for audio driver linking.
 
+### Intel Wi-Fi (AirportItlwm) is NOT supported 
+*  **This fork is exclusively optimized for Broadcom-based wireless chipsets.** If you require Intel Wi-Fi patches for Tahoe, please use [OCLP-Mod](https://github.com/laobamac/OCLP-Mod).
+
 ### [`Build and run from source`](https://github.com/xtomasnemec/OCLP-Plus/blob/main/SOURCE.md)
 
 ### Installation Requirements
@@ -56,6 +59,7 @@ Restores the `AppleHDA.kext`. Works for all non-T2 Macs that had native audio in
 *   [`Dortania Team`](https://github.com/dortania) (Original OCLP authors)
 *   [`lzhoang2801`](https://github.com/kgp-macPro/OCLP-lzhoang2801) (Original Tahoe patchset)
 *   [`CloverHackyColor`](https://github.com/CloverHackyColor) (Hackintosh essentials and beyond)
+*   [`laobamac`](https://github.com/laobamac) (Developer OCLP-Mod, Chinese language)
 *   [`YBronst`](https://github.com/YBronst) (Original OCLP-PLUS developer)
 *   [`xtomasnemec`](https://github.com/xtomasnemec)
 *   *Full list of OCLP contributors can be found in the [`original repository`](https://github.com/dortania/OpenCore-Legacy-Patcher).*
