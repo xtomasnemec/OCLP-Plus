@@ -10,8 +10,10 @@
 ## Compatible models:
 ```
 MacBookPro14,1 (14,2 - No T1 support! 14,3 - No T1 and dGPU support!)
+MacBookPro16,1 16,2 and 16,4
 MacBook10,1
-iMac18,x - 19,x (No Fusion drive support! Upgrade to an SSD!)
+iMac18,x - 20,x (No Fusion drive support! Upgrade to an SSD!)
+MacPro7,1
 ```
 
 **Graphics patches for Non-Metal, Legacy Metal and patches for T1 and T2 Macs are not supported, only use this for the 12" MacBook 2017, 13" MacBook Pro 2017 (Function keys) or iMacs introduced in 2017 and 2019 (SSD models or SSD upgraded)**
