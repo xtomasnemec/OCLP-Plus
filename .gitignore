@@ -39,3 +39,4 @@ __pycache__/
 /payloads/OCLP-Plus.app
 /.x86_64_venv
 *afdesign~lock~
+payloads/Tools/OCLP-Plus.app/Contents/MacOS/OpenCore-Patcher

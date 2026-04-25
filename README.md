@@ -28,6 +28,12 @@ Example build command for building OpenCore for MacBookPro14,1:
 ```
 .\.venv\Scripts\python -c "from oclp_plus.application_entry import main; main()" --build --model MacBookPro14,1
 ```
+ 
+## Non-functional features
+*  **On majority of patched Macs, iPhone Mirroring and Apple Intelligence won't be functional.**
+  
+   *  iPhone Mirroring requires T2 for attestation and Apple Intelligence requires an NPU only found in Apple Silicon.
+   *  The patcher is unable to provide a fix for these as they're hardware requirements.
 
 ## Tested Root Patches:
 

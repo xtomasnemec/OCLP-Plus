@@ -104,6 +104,10 @@ class BuildSecurity:
             if amfipass_prefer_over_amfi_arg:
                 nvram_guid = "7C436110-AB2A-4BBB-A880-FE41995C9F82"
                 boot_args = self.config["NVRAM"]["Add"][nvram_guid]["boot-args"]
+                if "-amfipassbeta" not in boot_args:
+                    logging.info("- Adding -amfipassbeta to boot-args (AMFIPass on Tahoe)")
+                    self.config["NVRAM"]["Add"][nvram_guid]["boot-args"] += " -amfipassbeta"
+                    boot_args = self.config["NVRAM"]["Add"][nvram_guid]["boot-args"]
                 if "amfi=0x80" in boot_args:
                     logging.info("- Removing amfi=0x80 from boot-args (AMFIPass)")
                     self.config["NVRAM"]["Add"][nvram_guid]["boot-args"] = " ".join([arg for arg in boot_args.split() if arg != "amfi=0x80"])
