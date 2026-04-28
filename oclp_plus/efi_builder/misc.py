@@ -85,7 +85,7 @@ xw
         block_args = ",".join(self._re_generate_block_arguments())
         patch_args = ",".join(self._re_generate_patch_arguments())
 
-        if block_args != "":
+        if block_args != "" and self.model not in ["MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4"]:
             logging.info(f"- Setting RestrictEvents block arguments: {block_args}")
             support.BuildSupport(self.model, self.constants, self.config).enable_kext("RestrictEvents.kext", self.constants.restrictevents_version, self.constants.restrictevents_path)
             self.config["NVRAM"]["Add"]["4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102"]["revblock"] = block_args
@@ -94,12 +94,12 @@ xw
             # Disable unneeded Userspace patching (cs_validate_page is quite expensive)
             patch_args = "none"
 
-        if patch_args != "":
+        if patch_args != "" and self.model not in ["MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4"]:
             logging.info(f"- Setting RestrictEvents patch arguments: {patch_args}")
             support.BuildSupport(self.model, self.constants, self.config).enable_kext("RestrictEvents.kext", self.constants.restrictevents_version, self.constants.restrictevents_path)
             self.config["NVRAM"]["Add"]["4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102"]["revpatch"] = patch_args
 
-        if support.BuildSupport(self.model, self.constants, self.config).get_kext_by_bundle_path("RestrictEvents.kext")["Enabled"] is False:
+        if support.BuildSupport(self.model, self.constants, self.config).get_kext_by_bundle_path("RestrictEvents.kext")["Enabled"] is False and self.model not in ["MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4"]:
             # Ensure this is done at the end so all previous RestrictEvents patches are applied
             # RestrictEvents and EFICheckDisabler will conflict if both are injected
             support.BuildSupport(self.model, self.constants, self.config).enable_kext("EFICheckDisabler.kext", "", self.constants.efi_disabler_path)
@@ -168,7 +168,7 @@ xw
         CPUFriend Handler
         """
 
-        if self.constants.allow_oc_everywhere is False and self.model not in ["iMac7,1", "Xserve2,1", "Dortania1,1"] and self.constants.disallow_cpufriend is False and self.constants.serial_settings != "None":
+        if self.constants.allow_oc_everywhere is False and self.model not in ["iMac7,1", "Xserve2,1", "Dortania1,1"] and self.model not in model_array.TahoeNativeModels and self.constants.disallow_cpufriend is False and self.constants.serial_settings != "None":
             support.BuildSupport(self.model, self.constants, self.config).enable_kext("CPUFriend.kext", self.constants.cpufriend_version, self.constants.cpufriend_path)
 
             # CPUFriendDataProvider handling
@@ -298,6 +298,7 @@ xw
             and usb_map_tahoe_path.exists()
             and (self.constants.allow_oc_everywhere is False or self.constants.allow_native_spoofs is True)
             and self.model not in ["Xserve2,1", "Dortania1,1"]
+            and self.model not in model_array.TahoeNativeModels
             and (
                 (self.model in model_array.Missing_USB_Map or self.model in model_array.Missing_USB_Map_Ventura)
                 or self.constants.serial_settings in ["Moderate", "Advanced"])

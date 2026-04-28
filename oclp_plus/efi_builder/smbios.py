@@ -47,7 +47,7 @@ class BuildSMBIOS:
         """
 
         if self.constants.allow_oc_everywhere is False or self.constants.allow_native_spoofs is True:
-            if self.constants.serial_settings == "None":
+            if self.constants.serial_settings == "None" or self.model in model_array.TahoeNativeModels:
                 # Credit to Parrotgeek1 for boot.efi and hv_vmm_present patch sets
                 logging.info("- Enabling Board ID exemption patch")
                 support.BuildSupport(self.model, self.constants, self.config).get_item_by_kv(self.config["Booter"]["Patch"], "Comment", "Skip Board ID check")["Enabled"] = True
@@ -63,9 +63,10 @@ class BuildSMBIOS:
             support.BuildSupport(self.model, self.constants, self.config).get_item_by_kv(self.config["ACPI"]["Patch"], "Comment", "EHC1 to EH01")["Enabled"] = True
             support.BuildSupport(self.model, self.constants, self.config).get_item_by_kv(self.config["ACPI"]["Patch"], "Comment", "EHC2 to EH02")["Enabled"] = True
 
-        if self.model == self.constants.override_smbios:
-            logging.info("- Adding -no_compat_check")
-            self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += " -no_compat_check"
+        if self.model == self.constants.override_smbios and self.model not in ["MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4"]:
+            if "-no_compat_check" not in self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"]:
+                logging.info("- Adding -no_compat_check")
+                self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += " -no_compat_check"
 
     def _strip_usb_map(self, map_path, model, spoofed_model, serial_settings):
         config = plistlib.load(Path(map_path).open("rb"))
@@ -157,6 +158,7 @@ class BuildSMBIOS:
         if (
             self.constants.allow_oc_everywhere is False
             and self.model not in ["Xserve2,1", "Dortania1,1"]
+            and self.model not in model_array.TahoeNativeModels
             and ((self.model in model_array.Missing_USB_Map or self.model in model_array.Missing_USB_Map_Ventura) or self.constants.serial_settings in ["Moderate", "Advanced"])
         ):
             new_map_ls = Path(self.constants.map_contents_folder) / Path("Info.plist")
@@ -164,7 +166,7 @@ class BuildSMBIOS:
             self._strip_usb_map(new_map_ls, self.model, self.spoofed_model, self.constants.serial_settings)
             self._strip_usb_map(new_map_ls_tahoe, self.model, self.spoofed_model, self.constants.serial_settings)
 
-        if self.constants.allow_oc_everywhere is False and self.model not in ["iMac7,1", "Xserve2,1", "Dortania1,1"] and self.constants.disallow_cpufriend is False and self.constants.serial_settings != "None":
+        if self.constants.allow_oc_everywhere is False and self.model not in ["iMac7,1", "Xserve2,1", "Dortania1,1"] and self.model not in model_array.TahoeNativeModels and self.constants.disallow_cpufriend is False and self.constants.serial_settings != "None":
             # Adjust CPU Friend Data to correct SMBIOS
             new_cpu_ls = Path(self.constants.pp_contents_folder) / Path("Info.plist")
             cpu_config = plistlib.load(Path(new_cpu_ls).open("rb"))
