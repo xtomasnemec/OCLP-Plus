@@ -100,6 +100,8 @@ SupportedSMBIOS = [
     "iMac18,3",
     "iMac19,1",
     "iMac19,2",
+    "iMac20,1",
+    "iMac20,2",
     # Mac Pro
     "MacPro3,1",
     "MacPro4,1",
@@ -210,6 +212,8 @@ ModernGPU = [
     "MacBookPro16,1",
     "MacBookPro16,2",
     "MacBookPro16,4",
+    "iMac20,1",
+    "iMac20,2",
 ]
 
 LegacyGPU = [
@@ -289,7 +293,7 @@ MacPro = ["MacPro3,1", "MacPro4,1", "MacPro5,1", "Xserve2,1", "Xserve3,1", "Dort
 # MXM iMac
 MXMiMac = ["iMac11,1", "iMac11,2", "iMac11,3", "iMac10,1", "iMac12,1", "iMac12,2", "Dortania1,1"]
 
-NoAGPMSupport = ["MacBookPro4,1", "iMac7,1", "iMac8,1", "MacPro3,1", "Xserve2,1", "MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4", "Dortania1,1"]
+NoAGPMSupport = ["MacBookPro4,1", "iMac7,1", "iMac8,1", "MacPro3,1", "Xserve2,1", "MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4", "iMac20,1", "iMac20,2", "Dortania1,1"]
 
 AGDPSupport = [
     "MacBookPro9,1",
@@ -307,8 +311,8 @@ AGDPSupport = [
      "iMac18,3",
      "iMac19,1",
      "iMac19,2",
-    # "iMac20,1",
-    # "iMac20,2",
+    "iMac20,1",
+    "iMac20,2",
      "iMacPro1,1",
     # "MacPro6,1",
 ]

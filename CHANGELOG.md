@@ -1,4 +1,12 @@
 # OCLP-Plus changelog
+
+## 3.2.1
+- **Supported native or spoofed models (SMBIOS) in macOS Tahoe:**
+  - **iMac**: iMac20,1, iMac20,2
+  - **MacBook Pro**: MacBookPro16,1, MacBookPro16,2, MacBookPro16,4
+  - **Mac Pro**: MacPro7,1
+-  $${\color{red}This \ set \ creates \ only \ draft \ templates \ for \ manual \ configuration \ and \ does \ not \ generate \ ready-made \ EFI \ folders.}$$
+
 ## 3.2.0
 *  **Summary of changes:**
 *  **Defined TahoeNativeModels**: iMac20,x, MacBookPro16,x, MacPro7,1.

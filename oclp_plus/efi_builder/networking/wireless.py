@@ -79,13 +79,13 @@ class BuildWirelessNetworking:
 
                 if "-amfipassbeta" not in self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"]:
                     self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += " -amfipassbeta"
-                if self.model in ["MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4"]:
+                if self.model in ["MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4", "iMac20,1", "iMac20,2"]:
                     logging.info(f"- Adding IOName spoof for {self.model} Wi-Fi")
                     if self.model == "MacPro7,1":
                         arpt_path = self.computer.wifi.pci_path or "PciRoot(0x0)/Pci(0x1C,0x5)/Pci(0x0,0x0)"
                     elif self.model in ["MacBookPro16,1", "MacBookPro16,4"]:
                         arpt_path = self.computer.wifi.pci_path or "PciRoot(0x0)/Pci(0x1D,0x0)/Pci(0x0,0x0)"
-                    elif self.model == "MacBookPro16,2":
+                    elif self.model in ["MacBookPro16,2", "iMac20,1", "iMac20,2"]:
                         arpt_path = self.computer.wifi.pci_path or "PciRoot(0x0)/Pci(0x14,0x3)"
 
                     if arpt_path not in self.config["DeviceProperties"]["Add"]:
@@ -157,14 +157,15 @@ class BuildWirelessNetworking:
             support.BuildSupport(self.model, self.constants, self.config).enable_kext("IO80211ElCap.kext", self.constants.io80211elcap_version, self.constants.io80211elcap_path)
             support.BuildSupport(self.model, self.constants, self.config).get_kext_by_bundle_path("IO80211ElCap.kext/Contents/PlugIns/AirPortAtheros40.kext")["Enabled"] = True
         elif smbios_data.smbios_dictionary[self.model]["Wireless Model"] == device_probe.Broadcom.Chipsets.AirportBrcmNIC:
-            support.BuildSupport(self.model, self.constants, self.config).enable_kext("AirportBrcmFixup.kext", self.constants.airportbcrmfixup_version, self.constants.airportbcrmfixup_path)        
-        if self.model in ["MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4"]:
+            support.BuildSupport(self.model, self.constants, self.config).enable_kext("AirportBrcmFixup.kext", self.constants.airportbcrmfixup_version, self.constants.airportbcrmfixup_path)
+
+        if self.model in ["MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4", "iMac20,1", "iMac20,2"]:
             logging.info(f"- Adding IOName spoof for {self.model} Wi-Fi")
             if self.model == "MacPro7,1":
                 arpt_path = "PciRoot(0x0)/Pci(0x1C,0x5)/Pci(0x0,0x0)"
             elif self.model in ["MacBookPro16,1", "MacBookPro16,4"]:
                 arpt_path = "PciRoot(0x0)/Pci(0x1D,0x0)/Pci(0x0,0x0)"
-            elif self.model == "MacBookPro16,2":
+            elif self.model in ["MacBookPro16,2", "iMac20,1", "iMac20,2"]:
                 arpt_path = "PciRoot(0x0)/Pci(0x14,0x3)"
 
             if arpt_path not in self.config["DeviceProperties"]["Add"]:
@@ -196,7 +197,7 @@ class BuildWirelessNetworking:
             support.BuildSupport(self.model, self.constants, self.config).get_kext_by_bundle_path("AMFIPass.kext")["MinKernel"] = min_kernel
             if "-amfipassbeta" not in self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"]:
                 self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += " -amfipassbeta"
-            if self.model in ["MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4"]:
+            if self.model in ["MacPro7,1", "MacBookPro16,1", "MacBookPro16,2", "MacBookPro16,4", "iMac20,1", "iMac20,2"]:
                 logging.info(f"- Lowering SIP for {self.model} root patching support")
                 self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["csr-active-config"] = binascii.unhexlify("03080000")
 
@@ -256,7 +257,7 @@ class BuildWirelessNetworking:
                     arpt_path = "PciRoot(0x0)/Pci(0x1C,0x5)/Pci(0x0,0x0)"
                 elif self.model in ("MacBookPro16,1", "MacBookPro16,4"):
                     arpt_path = "PciRoot(0x0)/Pci(0x1D,0x0)/Pci(0x0,0x0)"
-                elif self.model == "MacBookPro16,2":
+                elif self.model in ["MacBookPro16,2", "iMac20,1", "iMac20,2"]:
                     arpt_path = "PciRoot(0x0)/Pci(0x14,0x3)"
                 else:
                     # Assumes we have a laptop with Intel chipset

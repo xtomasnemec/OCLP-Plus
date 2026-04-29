@@ -46,6 +46,9 @@ def set_smbios_model_spoof(model):
         elif model.startswith("Macmini"):
             return "Macmini8,1"
         elif model.startswith("iMac"):
+            if smbios_data.smbios_dictionary[model]["Max OS Supported"] == os_data.os_data.max_os:
+                # Models supported in Tahoe
+                return model
             if smbios_data.smbios_dictionary[model]["Max OS Supported"] <= os_data.os_data.high_sierra:
                 # Models dropped in Mojave either do not have an iGPU, or should have them disabled
                 return "iMacPro1,1"
