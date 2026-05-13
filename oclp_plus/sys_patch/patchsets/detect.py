@@ -87,9 +87,10 @@ class HardwarePatchsetValidation(StrEnum):
     FORCE_OPENGL_MISSING          = "Validation: Force OpenGL property missing"
     FORCE_COMPAT_MISSING          = "Validation: Force compat property missing"
     NVDA_DRV_MISSING              = "Validation: nvda_drv(_vrl) variable missing"
+    REPATCHING_NOT_SUPPORTED      = "Validation: Revert Root Patches before repatching"
+    ROOT_VOLUME_DIRTY             = "Validation: Root volume is modified"
     PATCHING_NOT_POSSIBLE         = "Validation: Patching not possible"
     UNPATCHING_NOT_POSSIBLE       = "Validation: Unpatching not possible"
-    REPATCHING_NOT_SUPPORTED      = "Validation: Root volume dirty, unpatch to continue"
 
 
 class HardwarePatchsetDetection:
@@ -208,42 +209,6 @@ class HardwarePatchsetDetection:
         return "FileVault is Off" not in subprocess.run(["/usr/bin/fdesetup", "status"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.decode()
 
     
-    def _validation_check_repatching_is_possible(self) -> bool:
-        """
-        Determine if repatching is not allowed
-        """
-        oclp_patch_path = "/System/Library/CoreServices/OCLP-Plus.plist"
-        if not Path(oclp_patch_path).exists():
-            return self._is_root_volume_dirty()
-
-        oclp_plist = plistlib.load(open(oclp_patch_path, "rb"))
-
-        if self._constants.computer.oclp_sys_url != self._constants.commit_info[2]:
-            logging.error("Installed patches are from different commit, unpatching is required")
-            return True
-
-        wireless_keys = {"Legacy Wireless", "Modern Wireless Common"}
-
-        # Keep in sync with generate_patchset_plist
-        metadata_keys = {
-            "OCLP-Plus",
-            "PatcherSupportPkg",
-            "Time Patched",
-            "Commit URL",
-            "Kernel Debug Kit Used",
-            "Metal Library Used",
-            "OS Version",
-            "Custom Signature",
-        }
-
-        existing_patches = set(oclp_plist) - wireless_keys - metadata_keys
-        if existing_patches:
-            logging.error(f"Patch(es) already installed: {', '.join(existing_patches)}, unpatching is required")
-            return True
-
-        return False
-
-
     def _validation_check_system_integrity_protection_enabled(self, configs: list[str]) -> bool:
         """
         Determine if System Integrity Protection is enabled
@@ -317,6 +282,24 @@ class HardwarePatchsetDetection:
         return True
 
 
+    def _is_root_volume_dirty(self, manifest_path: Path = None) -> bool:
+        """
+        Determine if root volume is dirty
+        """
+        if utilities.check_seal() is False:
+            return True
+        if manifest_path is not None:
+            return True
+        return False
+
+
+    def _validation_check_root_is_dirty(self, manifest_path: Path = None) -> bool:
+        """
+        Determine if root volume is dirty
+        """
+        return self._is_root_volume_dirty(manifest_path)
+
+
     @cache
     def _override_amfi_level(self, level: amfi_detect.AmfiConfigDetectLevel) -> amfi_detect.AmfiConfigDetectLevel:
         """
@@ -367,28 +350,6 @@ class HardwarePatchsetDetection:
         return metallib_handler.MetalLibraryObject(self._constants, self._os_build, self._os_version).metallib_already_installed
 
     
-    def _is_root_volume_dirty(self) -> bool:
-        """
-        Determine if system volume is not sealed
-        """
-        # macOS 11.0 introduced sealed system volumes
-        if self._xnu_major < os_data.big_sur.value:
-            return False
-        
-        try:
-            content = plistlib.loads(subprocess.run(["/usr/sbin/diskutil", "info", "-plist", "/"], capture_output=True).stdout)
-        except plistlib.InvalidFileException:
-            raise RuntimeError("Failed to parse diskutil output.")
-
-        seal = content["Sealed"]
-
-        if "Broken" in seal:
-            logging.error(f"System volume is tainted, unpatching is required")
-            return True
-
-        return False
-
-
     def _can_patch(self, requirements: dict, ignore_keys: list[str] = []) -> bool:
         """
         Check if patching is possible
@@ -569,6 +530,8 @@ class HardwarePatchsetDetection:
 
         requires_network_connection = missing_metallib_support_pkg or missing_kernel_debug_kit
 
+        manifest_path = utilities.find_any_oclp_manifest(root_path=Path(self._constants.mount_root) if hasattr(self._constants, "mount_root") else Path("/"))
+
         requirements = {
             HardwarePatchsetSettings.KERNEL_DEBUG_KIT_REQUIRED:     requires_kernel_debug_kit,
             HardwarePatchsetSettings.KERNEL_DEBUG_KIT_MISSING:      missing_kernel_debug_kit,
@@ -581,12 +544,19 @@ class HardwarePatchsetDetection:
             HardwarePatchsetValidation.SIP_ENABLED:                 self._validation_check_system_integrity_protection_enabled(required_sip_configs),
             HardwarePatchsetValidation.SECURE_BOOT_MODEL_ENABLED:   self._validation_check_secure_boot_model_enabled(),
             HardwarePatchsetValidation.AMFI_ENABLED:                self._validation_check_amfi_enabled(highest_amfi_level),
-            HardwarePatchsetValidation.REPATCHING_NOT_SUPPORTED:    self._validation_check_repatching_is_possible(),
             HardwarePatchsetValidation.WHATEVERGREEN_MISSING:       self._validation_check_whatevergreen_missing() if has_nvidia_web_drivers is True else False,
             HardwarePatchsetValidation.FORCE_OPENGL_MISSING:        self._validation_check_force_opengl_missing()  if has_nvidia_web_drivers is True else False,
             HardwarePatchsetValidation.FORCE_COMPAT_MISSING:        self._validation_check_force_compat_missing()  if has_nvidia_web_drivers is True else False,
             HardwarePatchsetValidation.NVDA_DRV_MISSING:            self._validation_check_nvda_drv_missing()      if has_nvidia_web_drivers is True else False,
+            HardwarePatchsetValidation.REPATCHING_NOT_SUPPORTED:    False,
+            HardwarePatchsetValidation.ROOT_VOLUME_DIRTY:           False,
         }
+
+        if self._validation_check_root_is_dirty(manifest_path) is True:
+            if manifest_path is not None:
+                requirements[HardwarePatchsetValidation.REPATCHING_NOT_SUPPORTED] = True
+            else:
+                requirements[HardwarePatchsetValidation.ROOT_VOLUME_DIRTY] = True
 
         _cant_patch   = False
         _cant_unpatch = requirements[HardwarePatchsetValidation.SIP_ENABLED]

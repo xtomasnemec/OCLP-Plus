@@ -140,6 +140,44 @@ def check_seal():
     else:
         return False
 
+
+def find_any_oclp_manifest(root_path: Path = Path("/")):
+    """
+    Finds any OCLP-based manifest file in /System/Library/CoreServices/
+    """
+    core_services_path = root_path / "System/Library/CoreServices/"
+    if not core_services_path.exists():
+        return None
+
+    # Known Apple system plists to ignore
+    apple_plists = [
+        "SystemVersion.plist",
+        "PlatformSupport.plist",
+        "BuildInfo.plist",
+        "ServerVersion.plist",
+        "License.plist",
+        "ProductInfo.plist",
+        "DefaultDesktop.plist",
+        "BridgeVersion.plist",
+        "BaseSystemResources.plist",
+        "Siri.plist",
+        "com.apple.recoveryview.plist",
+    ]
+
+    for plist_path in core_services_path.glob("*.plist"):
+        if plist_path.name in apple_plists:
+            continue
+
+        try:
+            with open(plist_path, "rb") as f:
+                data = plistlib.load(f)
+                if any(key in data for key in ["OCLP-Plus", "OpenCore-Patcher", "PatcherSupportPkg", "Time Patched"]):
+                    return plist_path
+        except Exception:
+            continue
+
+    return None
+
 def check_filesystem_type():
     # Expected to return 'apfs'
     filesystem_type = plistlib.loads(subprocess.run(["/usr/sbin/diskutil", "info", "-plist", "/"], stdout=subprocess.PIPE).stdout.decode().strip().encode())

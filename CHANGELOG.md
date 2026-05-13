@@ -1,11 +1,20 @@
 # OCLP-Plus changelog
 
+## 3.2.2
+- **Added `find_any_oclp_manifest`** in `utilities.py` with support for custom root paths and optimized file scanning.
+- **Refined root volume dirty checks** in `detect.py`.
+- **Added specific validation feedback:** 'REPATCHING_NOT_SUPPORTED' (for existing manifests) and 'ROOT_VOLUME_DIRTY' (for broken seals).
+- **Updated GUI** to display validation reasons even when no new patches are detected.
+- **Updated README.md** with troubleshooting steps for these states.
+
 ## 3.2.1
 - **Supported native or spoofed models (SMBIOS) in macOS Tahoe:**
   - **iMac**: iMac20,1, iMac20,2
   - **MacBook Pro**: MacBookPro16,1, MacBookPro16,2, MacBookPro16,4
   - **Mac Pro**: MacPro7,1
--  $${\color{red}This \ set \ creates \ only \ draft \ templates \ for \ manual \ configuration \ and \ does \ not \ generate \ ready-made \ EFI \ folders.}$$
+
+- **This set creates only $${\color{red} draft \ templates}$$** for manual configuration and does not generate ready-made EFI folders.
+   - **To $${\color{red} to avoid \ unexpected \ errors}$$, I recommend using lzhoang2801** [`OpCore Simplify`](https://github.com/lzhoang2801/OpCore-Simplify).
 
 ## 3.2.0
 *  **Summary of changes:**
