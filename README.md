@@ -9,15 +9,17 @@
 
 ## Compatible models:
 ```
+MacBookPro13,1 (Sppofed GPU, 13,2 - No T1 support! 13,3 - No T1 and dGPU support!)
 MacBookPro14,1 (14,2 - No T1 support! 14,3 - No T1 and dGPU support!)
+MacBook9,1 (Spoofed GPU)
 MacBook10,1
 iMac18,x - 19,x (No Fusion drive support! Upgrade to an SSD!)
 ```
 
-**Graphics patches for Non-Metal, Legacy Metal and patches for T1 and T2 Macs are not supported, only use this for the 12" MacBook 2017, 13" MacBook Pro 2017 (Function keys) or iMacs introduced in 2017 and 2019 (SSD models or SSD upgraded)**
+**Graphics patches for Non-Metal, Legacy Metal and patches for T1 and T2 Macs are not supported**
 
 > [!NOTE]
-> Other Macs may be supported (the program doesn't block them and still *probably* creates a working OpenCore config), newer Macs have the T2 chip and they can't boot macOS via OpenCore. Older Macs do not support Metal 3 (so no graphics acceleration). **Your mileage may vary!**
+> Other Macs may be supported (the program doesn't block them and still *probably* creates a working OpenCore config), newer Macs have the T2 chip and they can't boot macOS via OpenCore. Older Macs do not support Metal 3 (so no graphics acceleration), 2016 Skylake Macs without dGPUs are partially supported with GPU spoofing. **Your mileage may vary!**
 >
 > You may also enable untested Root Patches, they probably won't work or they may break your macOS install. **Proceed with caution!**
 

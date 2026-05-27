@@ -1,5 +1,7 @@
 """
 model_array.py: Datasets for different models
+
+import binascii
 """
 
 
@@ -115,6 +117,30 @@ SupportedSMBIOS = [
     "iMacPro1,1",
 ]
 
+# Skylake to Kaby Lake GPU Spoof
+SkylakeToKabyLakeSpoof = {
+    "MacBook9,1": {
+        "device-id": binascii.unhexlify("16590000"),  # HD 625
+        "AAPL,ig-platform-id": binascii.unhexlify("591f0000"),  # Kaby Lake platform-id
+    },
+    "MacBookPro13,1": {
+        "device-id": binascii.unhexlify("26590000"),  # Iris 640
+        "AAPL,ig-platform-id": binascii.unhexlify("591e0000"),  # Kaby Lake platform-id
+    },
+    "MacBookPro13,2": {
+        "device-id": binascii.unhexlify("26590000"),  # Iris 640
+        "AAPL,ig-platform-id": binascii.unhexlify("591e0000"),  # Kaby Lake platform-id
+    },
+    "MacBookPro13,3": {
+        "device-id": binascii.unhexlify("26590000"),  # Iris 640
+        "AAPL,ig-platform-id": binascii.unhexlify("591e0000"),  # Kaby Lake platform-id
+    },
+    "iMac17,1": {
+        "device-id": binascii.unhexlify("3f590000"),  # Iris Pro 650
+        "AAPL,ig-platform-id": binascii.unhexlify("591b0000"),  # Kaby Lake platform-id
+    },
+}
+
 TahoeNativeModels = [
     "iMac20,1",
     "iMac20,2",
@@ -170,7 +196,6 @@ LegacyAudio = [
 
 ModernGPU = [
     "MacBook8,1", # Intel 6000
-    "MacBook9,1", # Intel Skylake
     "MacBookAir5,1",  # Intel 4000
     "MacBookAir5,2",  # Intel 4000
     "MacBookAir6,1",  # Intel 5000
@@ -187,9 +212,6 @@ ModernGPU = [
     "MacBookPro11,4",  # Intel 5000
     "MacBookPro11,5",  # Intel 5000 + GCN 1
     "MacBookPro12,1",  # Intel 6000
-    "MacBookPro13,1",  # Intel Skylake
-    "MacBookPro13,2",  # Intel Skylake
-    "MacBookPro13,3",  # Intel Skylake
     "Macmini6,1",  # Intel 4000
     "Macmini6,2",  # Intel 4000
     "Macmini7,1",  # Intel 5000
@@ -253,6 +275,14 @@ LegacyGPU = [
     "iMac12,1",  # AMD 6000
     "iMac12,2",  # AMD 6000
     "Dortania1,1",  # RTX 3080
+]
+
+SkylakeGPUSpoof = [
+    "MacBook9,1",  # Intel Skylake
+    "MacBookPro13,1",  # Intel Skylake
+    "MacBookPro13,2",  # Intel Skylake
+    "MacBookPro13,3",  # Intel Skylake
+    "iMac17,1",  # Intel Skylake + GCN1
 ]
 
 LegacyBrightness = [

@@ -473,6 +473,27 @@ class BuildGraphicsAudio:
             # Ensure that agdpmod is applied to iMac14,x with iGPU only
             self.config["DeviceProperties"]["Add"]["PciRoot(0x0)/Pci(0x2,0x0)"] = {"agdpmod": "vit9696"}
 
+        # Skylake GPU Spoof
+        if self.model in model_array.SkylakeGPUSpoof:
+            logging.info("- Adding Skylake GPU spoof boot arg")
+            if "-igfxsklaskbl" not in self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"]:
+                self.config["NVRAM"]["Add"]["7C436110-AB2A-4BBB-A880-FE41995C9F82"]["boot-args"] += " -igfxsklaskbl"
+
+        # Skylake to Kaby Lake GPU Spoof Properties
+        if self.model in model_array.SkylakeToKabyLakeSpoof:
+            logging.info("- Adding Skylake to Kaby Lake GPU spoof properties")
+            spoof_props = model_array.SkylakeToKabyLakeSpoof[self.model]
+            igpu_path = "PciRoot(0x0)/Pci(0x2,0x0)"
+            
+            if igpu_path not in self.config["DeviceProperties"]["Add"]:
+                self.config["DeviceProperties"]["Add"][igpu_path] = {}
+            
+            self.config["DeviceProperties"]["Add"][igpu_path].update(spoof_props)
+            
+            # Enable WhateverGreen for Skylake GPU spoofing
+            if not support.BuildSupport(self.model, self.constants, self.config).get_kext_by_bundle_path("WhateverGreen.kext")["Enabled"] is True:
+                support.BuildSupport(self.model, self.constants, self.config).enable_kext("WhateverGreen.kext", self.constants.whatevergreen_version, self.constants.whatevergreen_path)
+
 
     def _imac_mxm_patching(self) -> None:
         """
