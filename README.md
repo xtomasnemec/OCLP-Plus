@@ -85,7 +85,7 @@ s
 *   [`lzhoang2801`](https://github.com/kgp-macPro/OCLP-lzhoang2801) (Original Tahoe patchset)
 *   [`CloverHackyColor`](https://github.com/CloverHackyColor) (Hackintosh essentials and beyond)
 *   [`laobamac`](https://github.com/laobamac) (Developer OCLP-Mod, Chinese language)
-*   [`YBronst`](https://github.com/YBronst) (Original Skyfall developer)
+*   [`YBronst`](https://github.com/YBronst) (Original OCLP-Plus developer)
 *   [`xtomasnemec`](https://github.com/xtomasnemec)
 *   *Full list of OCLP contributors can be found in the [`original repository`](https://github.com/dortania/OpenCore-Legacy-Patcher).*
 
