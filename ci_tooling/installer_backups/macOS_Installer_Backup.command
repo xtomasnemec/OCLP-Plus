@@ -19,16 +19,16 @@ import subprocess
 from pathlib import Path
 from datetime import datetime
 
-# To allow easy importing of OCLP-Plus's utilities
+# To allow easy importing of Skyfall's utilities
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
-from oclp_plus.support import (
+from skyfall.support import (
     macos_installer_handler,
     network_handler,
     integrity_verification,
     utilities,
 )
-from oclp_plus.datasets import os_data
+from skyfall.datasets import os_data
 
 
 _DEFAULT_PATH: str = "/Volumes/macOS Installers"

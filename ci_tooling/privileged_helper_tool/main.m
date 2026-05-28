@@ -1,6 +1,6 @@
 /*
     ------------------------------------------------
-    OCLP-Plus Privileged Helper Tool
+    Skyfall Privileged Helper Tool
     ------------------------------------------------
     Designed as an alternative to an XPC service,
     this tool is used to run commands as root.

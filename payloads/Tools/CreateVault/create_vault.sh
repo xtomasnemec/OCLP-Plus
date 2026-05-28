@@ -4,7 +4,7 @@
 #
 #
 #  Created by Rodion Shingarev on 13.04.19.
-#  Modified by Jazzzny for OCLP-Plus on 06.10.23.
+#  Modified by Jazzzny for Skyfall on 06.10.23.
 #
 OCPath="$1"
 UtilsPath="$PWD"

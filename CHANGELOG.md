@@ -1,4 +1,11 @@
-# OCLP-Plus changelog
+# Skyfall changelog
+
+## 3.3.0
+- **Rebranded to Skyfall**
+- **New supported Macs**
+  - MacBookPro 13,1
+  - MacBook 9,1
+  - iMac 17,1
 
 ## 3.2.2
 - **Added `find_any_oclp_manifest`** in `utilities.py` with support for custom root paths and optimized file scanning.
@@ -64,7 +71,7 @@
 ## 2.3.0
 - Disable crash analytics
   - Disabled server side for years, removing client side
-- `OCLP-Plus-GUI.app.zip` removed from release
+- `Skyfall-GUI.app.zip` removed from release
   - Deprecated in 1.5.0, use `OpenCore-Patcher.pkg` for installation
 - Sync copyright label to 2025
 - Resolve MetallibSupportPkg failing to be cached on units without Kernel Debug Kit requirements
@@ -214,7 +221,7 @@
 ## 1.5.0
 - Restructure project directories
   - Python:
-    - Move logic into `oclp_plus` directory
+    - Move logic into `skyfall` directory
     - Use relative imports for local libraries
   - Documentation:
     - Move images to `docs/images`
@@ -231,15 +238,15 @@
   - Resolves boot issues on certain CSM-based Macs
 - Implement new PKG-based installer
   - `OpenCore-Patcher.pkg` is now the recommended method for installation
-  - `OCLP-Plus-Uninstaller.pkg` is now available for uninstallation
+  - `Skyfall-Uninstaller.pkg` is now available for uninstallation
     - Note this only removes the application, not any patches applied
-  - `OCLP-Plus-GUI.app.zip` is deprecated and will be removed in future versions
+  - `Skyfall-GUI.app.zip` is deprecated and will be removed in future versions
 - Implement new Privileged Helper Tool
   - Removes need for password prompts when installing patches, creating installers, etc.
-  - Installed at `/Library/PrivilegedHelperTools/com.dortania.opencore-legacy-patcher.privileged-helper`
+  - Installed at `/Library/PrivilegedHelperTools/com.xtomasnemec.skyfall.priviledged-helper`
   - No launch services required
   - For running from source, recompile tool with debug configuration (`make debug`)
-- Resolve OCLP-Plus.app window not appearing as topmost window on launch
+- Resolve Skyfall.app window not appearing as topmost window on launch
 - Reworked CI tooling:
   - New build script with reworked parameters: `Build-Project.command`
   - Remove reliance on WhiteBox's Packages for AutoPkg creation
@@ -479,9 +486,9 @@
   - Setting must be re-enabled after patching
 - Update non-Metal Binaries:
   - Resolve window placement defaulting past top of screen for some apps
-    - ex. OCLP-Plus.app during root patching
+    - ex. Skyfall.app during root patching
   - Resolve indeterminate progress bars not rendering with wxWidgets in Monterey and later
-    - ex. OCLP-Plus.app
+    - ex. Skyfall.app
 - UI changes:
   - Add "Show Log File" button to menubar
 - Avoid listing unsupported installer to download by default
@@ -495,7 +502,7 @@
     - Implement formatted logging
       - Allowing easier debugging
     - Implement per-version, per-run file logging
-      - ex. OCLP-Plus (0.6.7) (2021-12-31-12-34-56-666903).log
+      - ex. Skyfall (0.6.7) (2021-12-31-12-34-56-666903).log
     - Keep only 10 latest log files
     - Reveal log file in Finder on main thread crash
     - Avoid writing username to log file
@@ -535,7 +542,7 @@
     - May require tccplus for permissions
 - Resolve Application alias not being created with AutoPatcher
 - Backend changes:
-  - Rename OCLP-Helper to OCLP-Plus
+  - Rename OCLP-Helper to Skyfall
     - Allows for better identification when displaying prompts
   - Reimplement wxPython GUI into modularized system:
     - Allows for easier maintenance and future expansion
@@ -680,7 +687,7 @@
     - Support local loose matching when no network connection is available
     - Implement pkg receipt verification to validate integrity of KDKs
   - Implemented logging framework usage for more reliable logging
-    - Logs are stored under `~/Library/Logs/OCLP-Plus.log`
+    - Logs are stored under `~/Library/Logs/Skyfall.log`
     - Subsequent runs are appended to the log, allowing for easy debugging
   - Implemented new network_handler.py module
     - Allows for more reliable network calls and downloads
@@ -970,7 +977,7 @@
   - Adds OpenCL downgrade for TeraScale 2
     - Resolves VNC support (credit IronApple#2711)
   - Fix SecureBootModel detection
-- Add `OCLP-Plus.plist` for applied patch info
+- Add `Skyfall.plist` for applied patch info
   - Located under `/System/Library/CoreServices`
   - Lists patch sets applied including files installed and removed
 - Add `preinstall` script to AutoPatcher
@@ -1030,7 +1037,7 @@
   - Post OS Updates:
     - After OS updates, Patcher will detect whether system requires root patches and prompt you
     - Implemented via Launch Agent in `/Library/LaunchAgents`
-    - OCLP-Plus.app will be copied to `/Library/Application Support/Dortania` for storage
+    - Skyfall.app will be copied to `/Library/Application Support/Dortania` for storage
   - Notify users when OpenCore is booted from external disk not matching macOS (ie. USB installer)
     - Disable notification via `defaults write com.dortania.opencore-legacy-patcher AutoPatch_Notify_Mismatched_Disks -bool FALSE`
 - GUI Enhancements:
@@ -1642,7 +1649,7 @@
 
 ## 0.0.12
 
-- Convert OCLP-Plus binary to OCLP-Plus.app
+- Convert Skyfall binary to Skyfall.app
 - Add Backlight patches for modded Nvidia GPUs in iMac10,x-12,x
 - Fix sleep for iMac12,x with upgraded GPUs
 
@@ -1650,7 +1657,7 @@
 
 - Re-add OpenCore GUI
 - Rewrite in py3
-- Add OCLP-Plus binary for releases avoiding local python requirement
+- Add Skyfall binary for releases avoiding local python requirement
 - Increment binaries
   - OpenCore cbd2fa3 (0.6.7 release)
   - WhateverGreen 2e19d1b (1.4.8 release)

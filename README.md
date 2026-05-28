@@ -1,7 +1,7 @@
 <div align="center">
-<img src="https://github.com/YBronst/OCLP-Plus/blob/main/docs/images/OC-Patcher.png"  alt="OC-Patcher Logo" width="256" />
+<img src="https://github.com/xtomasnemec/Skyfall/blob/main/docs/images/OC-Patcher.png"  alt="OC-Patcher Logo" width="256" />
 
-# [OCLP-Plus (Tahoe Patch Set)](https://github.com/xtomasnemec/OCLP-Plus/releases)
+# [Skyfall](https://github.com/xtomasnemec/Skyfall/releases)
 
 </div>
 
@@ -9,10 +9,11 @@
 
 ## Compatible models:
 ```
-MacBookPro13,1 (Sppofed GPU, 13,2 - No T1 support! 13,3 - No T1 and dGPU support!)
+MacBookPro13,1 (Sppofed iGPU, 13,2 - No T1 support! 13,3 - No T1 and dGPU support!)
 MacBookPro14,1 (14,2 - No T1 support! 14,3 - No T1 and dGPU support!)
-MacBook9,1 (Spoofed GPU)
+MacBook9,1 (Spoofed iGPU)
 MacBook10,1
+iMac17,1 (Spoofed iGPU, no dGPU support! No Fusion drive support! Upgrade to an SSD!)
 iMac18,x - 19,x (No Fusion drive support! Upgrade to an SSD!)
 ```
 
@@ -28,7 +29,7 @@ iMac18,x - 19,x (No Fusion drive support! Upgrade to an SSD!)
 Example build command for building OpenCore for MacBookPro14,1:
 
 ```
-.\.venv\Scripts\python -c "from oclp_plus.application_entry import main; main()" --build --model MacBookPro14,1
+.\.venv\Scripts\python -c "from skyfall.application_entry import main; main()" --build --model MacBookPro14,1
 ```
  
 ## Non-functional features
@@ -40,20 +41,17 @@ Example build command for building OpenCore for MacBookPro14,1:
 ## Tested Root Patches:
 
 ### Wireless & Continuity Restoration
-Restores full functionality for Broadcom-based wireless chipsets found in most 2009 - 2017 Macs (BRCM4360/4350 and BCM943224/94331):
+Restores full functionality for Broadcom-based wireless chipsets found in most 2009 - 2017 Macs (BRCM4360/4350 and BCM943224/94331)
 
 ## PCIe webcam
-Restores full functionality for PCIe webcams found in MacBooks and iMacs before 2018
+Restores full functionality for PCIe webcams found in non-T2 Macs.
 
 ### Modern Audio (AppleHDA Restoration)
 Restores the `AppleHDA.kext`. Works for all non-T2 Macs that had native audio in Sequoia. Requires the KDK.
 *  **Manual Toggle:** A new "Modern Audio" toggle in the Root Patches menu allows you to enable or disable this restoration manually.
 *  **KDK Integration:** Automatically handles the necessary Kernel Debug Kit (KDK) requirements for audio driver linking.
 
-### Intel Wi-Fi (AirportItlwm) is NOT supported 
-*  **This fork is exclusively optimized for Broadcom-based wireless chipsets.** If you require Intel Wi-Fi patches for Tahoe, please use [OCLP-Mod](https://github.com/laobamac/OCLP-Mod).
-
-### [`Build and run from source`](https://github.com/xtomasnemec/OCLP-Plus/blob/main/SOURCE.md)
+### [`Build and run from source`](https://github.com/xtomasnemec/Skyfall/blob/main/SOURCE.md)
 
 
 ### Installation Requirements
@@ -87,7 +85,7 @@ s
 *   [`lzhoang2801`](https://github.com/kgp-macPro/OCLP-lzhoang2801) (Original Tahoe patchset)
 *   [`CloverHackyColor`](https://github.com/CloverHackyColor) (Hackintosh essentials and beyond)
 *   [`laobamac`](https://github.com/laobamac) (Developer OCLP-Mod, Chinese language)
-*   [`YBronst`](https://github.com/YBronst) (Original OCLP-PLUS developer)
+*   [`YBronst`](https://github.com/YBronst) (Original Skyfall developer)
 *   [`xtomasnemec`](https://github.com/xtomasnemec)
 *   *Full list of OCLP contributors can be found in the [`original repository`](https://github.com/dortania/OpenCore-Legacy-Patcher).*
 

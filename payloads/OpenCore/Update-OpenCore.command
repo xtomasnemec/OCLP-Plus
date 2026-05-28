@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Script to download and generate valid OpenCorePkg folder/file structure for use with OCLP-Plus
+# Script to download and generate valid OpenCorePkg folder/file structure for use with Skyfall
 # To use:
 # - Download OpenCore-{VERSION}-{VARIANT}.zip
 #   - If no files are found, the script will download the latest version

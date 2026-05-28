@@ -5,13 +5,13 @@ import subprocess
 
 from pathlib import Path
 
-from oclp_plus.volume  import generate_copy_arguments
-from oclp_plus.support import subprocess_wrapper
+from skyfall.volume  import generate_copy_arguments
+from skyfall.support import subprocess_wrapper
 
 
 class GenerateApplication:
     """
-    Generate OCLP-Plus.app
+    Generate Skyfall.app
     """
 
     def __init__(self, reset_pyinstaller_cache: bool = False, git_branch: str = None, git_commit_url: str = None, git_commit_date: str = None, analytics_key: str = None, analytics_endpoint: str = None) -> None:
@@ -19,7 +19,7 @@ class GenerateApplication:
         Initialize
         """
         self._pyinstaller = [sys.executable, "-m", "PyInstaller"]
-        self._application_output = Path("./dist/OCLP-Plus.app")
+        self._application_output = Path("./dist/Skyfall.app")
 
         self._reset_pyinstaller_cache = reset_pyinstaller_cache
 
@@ -38,8 +38,8 @@ class GenerateApplication:
         if self._application_output.exists():
             subprocess_wrapper.run_and_verify(["/bin/rm", "-rf", self._application_output], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        print("Generating OCLP-Plus.app")
-        _args = self._pyinstaller + ["./OCLP-Plus.spec", "--noconfirm"]
+        print("Generating Skyfall.app")
+        _args = self._pyinstaller + ["./Skyfall.spec", "--noconfirm"]
         if self._reset_pyinstaller_cache:
             _args.append("--clean")
 
@@ -50,7 +50,7 @@ class GenerateApplication:
         """
         Embed analytics key
         """
-        _file = Path("./oclp_plus/support/analytics_handler.py")
+        _file = Path("./skyfall/support/analytics_handler.py")
 
         if not all([self._analytics_key, self._analytics_endpoint]):
             print("Analytics key or endpoint not provided, skipping embedding")
@@ -78,7 +78,7 @@ class GenerateApplication:
         """
         Remove analytics key
         """
-        _file = Path("./oclp_plus/support/analytics_handler.py")
+        _file = Path("./skyfall/support/analytics_handler.py")
 
         if not all([self._analytics_key, self._analytics_endpoint]):
             return
@@ -110,14 +110,14 @@ class GenerateApplication:
         and instead we're able to support 10.10 without issues.
 
         To verify set version:
-          otool -l ./dist/OCLP-Plus.app/Contents/MacOS/OCLP-Plus
+          otool -l ./dist/Skyfall.app/Contents/MacOS/Skyfall
 
               cmd LC_VERSION_MIN_MACOSX
           cmdsize 16
           version 10.13
               sdk 10.9
         """
-        _file = self._application_output / "Contents" / "MacOS" / "OCLP-Plus"
+        _file = self._application_output / "Contents" / "MacOS" / "Skyfall"
 
         _find    = b'\x00\x0D\x0A\x00' # 10.13 (0xA0D)
         _replace = b'\x00\x0A\x0A\x00' # 10.10 (0xA0A)
@@ -138,7 +138,7 @@ class GenerateApplication:
         This will enable the Solarium refresh when running on macOS 26
         Minor visual anomalies and padding issues exist, disable if not addressed before release
         """
-        _file = self._application_output / "Contents" / "MacOS" / "OCLP-Plus"
+        _file = self._application_output / "Contents" / "MacOS" / "Skyfall"
 
         _find    = b'\x00\x01\x0C\x00'
         _replace = b'\x00\x00\x1A\x00'
@@ -190,7 +190,7 @@ class GenerateApplication:
 
     def generate(self) -> None:
         """
-        Generate OCLP-Plus.app
+        Generate Skyfall.app
         """
         self._embed_analytics_key()
         self._generate_application()

@@ -1,6 +1,6 @@
 # Privacy Policy
 
-OCLP-Plus may collect pseudo-anonymized data about the host system and the OCLP-Plus application. This data is used to improve the project and to help diagnose issues. The data collected is as follows:
+Skyfall may collect pseudo-anonymized data about the host system and the Skyfall application. This data is used to improve the project and to help diagnose issues. The data collected is as follows:
 
 * System's UUID as a SHA1 hash
   * This is used to identify the system and to prevent duplicate reports

@@ -93,14 +93,14 @@ jobs:
       - name: Upload Installation Package to Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: OCLP-Plus.pkg
-          path: ./dist/OCLP-Plus.pkg
+          name: Skyfall.pkg
+          path: ./dist/Skyfall.pkg
 
       - name: Upload Uninstaller Package to Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: OCLP-Plus-Uninstaller.pkg
-          path: ./dist/OCLP-Plus-Uninstaller.pkg
+          name: Skyfall-Uninstaller.pkg
+          path: ./dist/Skyfall-Uninstaller.pkg
 
       - name: Upload AutoPkg Package to Release
         if: github.event_name == 'release'
@@ -116,7 +116,7 @@ jobs:
         uses: svenstaro/upload-release-action@e74ff71f7d8a4c4745b560a485cc5fdb9b5b999d
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./dist/OCLP-Plus.pkg
+          file: ./dist/Skyfall.pkg
           tag: ${{ github.ref }}
           file_glob: true
 
@@ -125,6 +125,6 @@ jobs:
         uses: svenstaro/upload-release-action@e74ff71f7d8a4c4745b560a485cc5fdb9b5b999d
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./dist/OCLP-Plus-Uninstaller.pkg
+          file: ./dist/Skyfall-Uninstaller.pkg
           tag: ${{ github.ref }}
           file_glob: true

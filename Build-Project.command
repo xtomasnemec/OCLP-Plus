@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Build-Project.command: Generate OCLP-Plus.app and OCLP-Plus.pkg
+Build-Project.command: Generate Skyfall.app and Skyfall.pkg
 """
 
 import os
 import sys
 import time
 import argparse
+import subprocess
 
 from pathlib import Path
 
@@ -18,12 +19,44 @@ from ci_tooling.build_modules import (
 )
 
 
+def _prepare_icon_assets() -> None:
+    """
+    Regenerate App Icon resources before the app build.
+    """
+    icon_source = Path("Skyfall.icon")
+    icon_compile_dir = Path("payloads/Icon/AppIcons")
+
+    if not icon_source.exists():
+        print(f"Skipping actool step, missing source icon: {icon_source}")
+        return
+
+    print("Running actool for Skyfall.icon")
+    subprocess.run(
+    [
+        "xcrun",
+        "actool",
+        str(icon_source),
+        "--compile",
+        str(icon_compile_dir),
+        "--platform",
+        "macosx",
+        "--minimum-deployment-target",
+        "11.0",
+        "--app-icon",
+        "AppIcon",
+        "--output-partial-info-plist",
+        str(icon_compile_dir / "icon.plist"),
+    ],
+    check=True,
+)
+
+
 def main() -> None:
     """
     Parse Command Line Arguments
     """
 
-    parser = argparse.ArgumentParser(description="Build OCLP-Plus Suite", add_help=False)
+    parser = argparse.ArgumentParser(description="Build Skyfall Suite", add_help=False)
 
     # Signing Parameters
     parser.add_argument("--application-signing-identity", type=str, help="Application Signing Identity")
@@ -70,6 +103,8 @@ def main() -> None:
     # Set 'Current Working Directory' to script directory
     os.chdir(Path(__file__).resolve().parent)
 
+    _prepare_icon_assets()
+
 
     if (args.run_as_individual_steps is False) or (args.run_as_individual_steps and args.prepare_assets):
         # Prepare workspace
@@ -78,14 +113,14 @@ def main() -> None:
     if (args.run_as_individual_steps is False) or (args.run_as_individual_steps and args.prepare_application):
         # Prepare Privileged Helper Tool
         sign_notarize.SignAndNotarize(
-            path=Path("./ci_tooling/privileged_helper_tool/com.dortania.opencore-legacy-patcher.privileged-helper"),
+            path=Path("./ci_tooling/privileged_helper_tool/com.xtomasnemec.skyfall.priviledged-helper"),
             signing_identity=args.application_signing_identity,
             notarization_apple_id=args.notarization_apple_id,
             notarization_password=args.notarization_password,
             notarization_team_id=args.notarization_team_id,
         ).sign_and_notarize()
 
-        # Build OCLP-Plus.app
+        # Build Skyfall.app
         application.GenerateApplication(
             reset_pyinstaller_cache=args.reset_pyinstaller_cache,
             git_branch=args.git_branch,
@@ -95,9 +130,9 @@ def main() -> None:
             analytics_endpoint=args.analytics_endpoint,
         ).generate()
 
-        # Sign OCLP-Plus.app
+        # Sign Skyfall.app
         sign_notarize.SignAndNotarize(
-            path=Path("dist/OCLP-Plus.app"),
+            path=Path("dist/Skyfall.app"),
             signing_identity=args.application_signing_identity,
             notarization_apple_id=args.notarization_apple_id,
             notarization_password=args.notarization_password,
@@ -107,21 +142,21 @@ def main() -> None:
 
 
     if (args.run_as_individual_steps is False) or (args.run_as_individual_steps and args.prepare_package):
-        # Build OCLP-Plus.pkg and OCLP-Plus-Uninstaller.pkg
+        # Build Skyfall.pkg and Skyfall-Uninstaller.pkg
         package.GeneratePackage().generate()
 
-        # Sign OCLP-Plus.pkg
+        # Sign Skyfall.pkg
         sign_notarize.SignAndNotarize(
-            path=Path("dist/OCLP-Plus.pkg"),
+            path=Path("dist/Skyfall.pkg"),
             signing_identity=args.installer_signing_identity,
             notarization_apple_id=args.notarization_apple_id,
             notarization_password=args.notarization_password,
             notarization_team_id=args.notarization_team_id,
         ).sign_and_notarize()
 
-        # Sign OCLP-Plus-Uninstaller.pkg
+        # Sign Skyfall-Uninstaller.pkg
         sign_notarize.SignAndNotarize(
-            path=Path("dist/OCLP-Plus-Uninstaller.pkg"),
+            path=Path("dist/Skyfall-Uninstaller.pkg"),
             signing_identity=args.installer_signing_identity,
             notarization_apple_id=args.notarization_apple_id,
             notarization_password=args.notarization_password,

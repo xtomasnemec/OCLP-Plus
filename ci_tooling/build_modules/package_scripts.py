@@ -315,14 +315,14 @@ class GenerateScripts:
         self.zsh_functions = ZSHFunctions()
 
         self.files = [
-            "Applications/OCLP-Plus.app",
+            "Applications/Skyfall.app",
             "Library/Application Support/Dortania/Update.plist",
-            "Library/Application Support/Dortania/OCLP-Plus.app",
-            "Library/PrivilegedHelperTools/com.dortania.opencore-legacy-patcher.privileged-helper"
+            "Library/Application Support/xtomasnemec/Skyfall.app",
+            "Library/PrivilegedHelperTools/com.xtomasnemec.skyfall.priviledged-helper"
         ]
 
         self.additional_auto_pkg_files = [
-            "Library/LaunchAgents/com.dortania.opencore-legacy-patcher.auto-patch.plist"
+            "Library/LaunchAgents/com.xtomasnemec.skyfall.auto-patch.plist"
         ]
 
 
@@ -357,7 +357,7 @@ class GenerateScripts:
         _script += self.__generate_shebang()
 
         _script += self._generate_header_bar()
-        _script += f"# {'AutoPkg Assets' if is_autopkg else 'OCLP-Plus'} Preinstall Script\n"
+        _script += f"# {'AutoPkg Assets' if is_autopkg else 'Skyfall'} Preinstall Script\n"
         _script += self._generate_header_bar()
         _script += "# Remove old files, and prepare directories.\n"
         _script += self._generate_header_bar()
@@ -412,7 +412,7 @@ class GenerateScripts:
         _script += self.__generate_shebang()
 
         _script += self._generate_header_bar()
-        _script += f"# {'AutoPkg Assets' if is_autopkg else 'OCLP-Plus'} Post Install Script\n"
+        _script += f"# {'AutoPkg Assets' if is_autopkg else 'Skyfall'} Post Install Script\n"
         _script += self._generate_header_bar()
         if is_autopkg:
             _script += "# Set UID, create alias, start patching, and reboot.\n"
@@ -428,9 +428,9 @@ class GenerateScripts:
         _script += self._generate_label_bar()
         _script += "\n"
 
-        _script += "helperPath=\"Library/PrivilegedHelperTools/com.dortania.opencore-legacy-patcher.privileged-helper\"\n"
-        _script += "mainAppPath=\"Library/Application Support/Dortania/OCLP-Plus.app\"\n"
-        _script += "shimAppPath=\"Applications/OCLP-Plus.app\"\n"
+        _script += "helperPath=\"Library/PrivilegedHelperTools/com.xtomasnemec.skyfall.priviledged-helper\"\n"
+        _script += "mainAppPath=\"Library/Application Support/xtomasnemec/Skyfall.app\"\n"
+        _script += "shimAppPath=\"Applications/Skyfall.app\"\n"
         if is_autopkg:
             _script += "executablePath=\"$mainAppPath/Contents/MacOS/OpenCore-Patcher\"\n"
 
@@ -477,9 +477,9 @@ class GenerateScripts:
         _script += self.__generate_shebang()
 
         _script += self._generate_header_bar()
-        _script += f"# OCLP-Plus Uninstall Script\n"
+        _script += f"# Skyfall Uninstall Script\n"
         _script += self._generate_header_bar()
-        _script += "# Remove OCLP-Plus files and directories.\n"
+        _script += "# Remove Skyfall files and directories.\n"
         _script += self._generate_header_bar()
         _script += "\n\n"
 

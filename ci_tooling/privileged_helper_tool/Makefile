@@ -1,5 +1,5 @@
 CC=clang
-OUTPUT=com.dortania.opencore-legacy-patcher.privileged-helper
+OUTPUT=com.xtomasnemec.skyfall.priviledged-helper
 
 all: clean release
 
